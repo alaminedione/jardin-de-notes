@@ -97,9 +97,6 @@ export default app;
 **Diagramme Mermaid**
 
 ```mermaid
-**Diagramme Mermaid : Structure des Tables (Class Diagram)**
-
-```mermaid
 classDiagram
     class UserOriginal {
         +id: int

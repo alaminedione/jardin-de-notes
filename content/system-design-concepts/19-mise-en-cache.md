@@ -112,24 +112,20 @@ sequenceDiagram
     Client->>Application: Requête de données
     activate Application
     Application->>Cache: 1. Vérifier si les données sont en cache
-    activate Cache
 
     alt Cache Hit
         Cache-->>Application: Données trouvées dans le cache
-        deactivate Cache
         Application-->>Client: Réponse (rapide depuis le cache)
     else Cache Miss
         Cache-->>Application: Données non trouvées
-        deactivate Cache
         Application->>BaseDeDonnees: 2. Lire les données depuis la base de données
         activate BaseDeDonnees
         BaseDeDonnees-->>Application: Données lues
         deactivate BaseDeDonnees
         Application->>Cache: 3. Stocker les données dans le cache (avec TTL)
-        activate Cache
         Cache-->>Application: Confirmation de stockage
-        deactivate Cache
         Application-->>Client: Réponse (depuis la base de données)
     end
     deactivate Application
+
 ```

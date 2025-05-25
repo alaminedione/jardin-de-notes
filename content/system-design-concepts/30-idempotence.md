@@ -105,30 +105,26 @@ export default app;
 sequenceDiagram
     participant Client
     participant Application
-    participant IdempotencyStore[Stockage d'Idempotence]
-    participant BusinessLogic[Logique Métier]
+    participant IdempotencyStore as "Stockage d'Idempotence"
+    participant BusinessLogic as "Logique Métier"
 
     Client->>Application: Requête (avec Idempotency-Key)
     activate Application
     Application->>IdempotencyStore: 1. Vérifier si la clé existe
-    activate IdempotencyStore
 
     alt Clé trouvée (requête dupliquée)
         IdempotencyStore-->>Application: Retourne le résultat mis en cache
-        deactivate IdempotencyStore
         Application-->>Client: Renvoie le résultat mis en cache
     else Clé non trouvée (nouvelle requête)
         IdempotencyStore-->>Application: Clé non trouvée
-        deactivate IdempotencyStore
         Application->>BusinessLogic: 2. Exécuter l'opération
         activate BusinessLogic
         BusinessLogic-->>Application: Résultat de l'opération
         deactivate BusinessLogic
         Application->>IdempotencyStore: 3. Stocker le résultat avec la clé
-        activate IdempotencyStore
         IdempotencyStore-->>Application: Confirmation de stockage
-        deactivate IdempotencyStore
         Application-->>Client: Renvoie le résultat de l'opération
     end
     deactivate Application
+
 ```
