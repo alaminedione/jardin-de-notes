@@ -82,9 +82,9 @@ Insérez les données suivantes dans les tables que vous avez créées.
 
 | nom     | prenom    | email                     | telephone    | date\_naissance |
 |---------|-----------|---------------------------|--------------|-----------------|
-| Diouf   | Khadim    | [adresse e-mail supprimée]   | 77 777 77 77 | 1985-05-10      |
-| Dubois  | Sophie    | [adresse e-mail supprimée] | 06 06 06 06 06 | 1992-11-22      |
-| Janssens| Pieter    | [adresse e-mail supprimée] | 02 222 22 22 | 1988-03-01      |
+| Diouf   | Khadim    | khadim.diouf@example.com   | 77 777 77 77 | 1985-05-10      |
+| Dubois  | Sophie    | sophie.dubois@example.com | 06 06 06 06 06 | 1992-11-22      |
+| Janssens| Pieter    | pieter.janssens@example.com | 02 222 22 22 | 1988-03-01      |
 
 **Table `VOL`:**
 
@@ -103,9 +103,43 @@ Insérez les données suivantes dans les tables que vous avez créées.
 | 2            | 2       | 1                 |
 | 3            | 3       | 1                 |
 
-**Instructions pour l'insertion (À faire par vous - en PostgreSQL) :**
+<details>
+<summary>Requêtes d'insertion de données</summary>
 
-Utilisez l'instruction `INSERT INTO` pour ajouter ces données dans les tables correspondantes.
+```sql
+-- Insertion de données pour la table COMPAGNIE_AERIENNE
+INSERT INTO COMPAGNIE_AERIENNE (id_compagnie, nom_compagnie, code_icao) VALUES
+(1, 'Air Sénégal', 'CSE'),
+(2, 'Transavia', 'TVF'),
+(3, 'Brussels Airlines', 'BEL');
+
+-- Insertion de données pour la table AEROPORT
+INSERT INTO AEROPORT (id_aeroport, code_iata, nom_aeroport, ville, pays) VALUES
+(1, 'DSS', 'Aéroport International Blaise Diagne', 'Diass', 'Sénégal'),
+(2, 'CDG', 'Aéroport Paris-Charles de Gaulle', 'Paris', 'France'),
+(3, 'BRU', 'Aéroport de Bruxelles-National', 'Bruxelles', 'Belgique'),
+(4, 'AMS', 'Aéroport d''Amsterdam-Schiphol', 'Amsterdam', 'Pays-Bas');
+
+-- Insertion de données pour la table PASSAGER
+INSERT INTO PASSAGER (id_passager, nom, prenom, email, telephone, date_naissance) VALUES
+(1, 'Diouf', 'Khadim', 'khadim.diouf@example.com', '77 777 77 77', '1985-05-10'),
+(2, 'Dubois', 'Sophie', 'sophie.dubois@example.com', '06 06 06 06 06', '1992-11-22'),
+(3, 'Janssens', 'Pieter', 'pieter.janssens@example.com', '02 222 22 22', '1988-03-01');
+
+-- Insertion de données pour la table VOL
+INSERT INTO VOL (id_vol, id_aeroport_depart, id_aeroport_arrivee, id_compagnie, heure_depart, heure_arrivee, capacite, prix) VALUES
+(1, 1, 2, 1, '2025-04-15 10:00:00', '2025-04-15 16:00:00', 150, 350.00),
+(2, 2, 3, 2, '2025-04-20 08:00:00', '2025-04-20 09:30:00', 180, 120.50),
+(3, 3, 4, 3, '2025-05-01 14:00:00', '2025-05-01 15:15:00', 100, 180.75),
+(4, 1, 3, 1, '2025-05-10 18:00:00', '2025-05-11 00:30:00', 120, 420.20);
+
+-- Insertion de données pour la table RESERVATION
+INSERT INTO RESERVATION (id_reservation, id_passager, id_vol, date_reservation, nombre_passagers, statut) VALUES
+(1, 1, 1, '2025-04-01', 2, 'Confirmée'),
+(2, 2, 2, '2025-04-05', 1, 'Confirmée'),
+(3, 3, 3, '2025-04-10', 1, 'Confirmée');
+```
+</details>
 
 **4. Fonctionnalités Avancées (À faire par vous - en PostgreSQL)**
 

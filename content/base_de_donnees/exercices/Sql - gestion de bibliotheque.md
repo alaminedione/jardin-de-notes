@@ -4,8 +4,6 @@ Parfait ! Voici un autre exercice complet de SQL (SQLite), cette fois-ci sur une
 
 **1. Modèle Logique des Données (MLD) en ER Diagram**
 
-Extrait de code
-
 ```mermaid
 erDiagram
     LIVRE ||--o{ EMPRUNT : est_emprunte
@@ -114,9 +112,50 @@ Insérez les données suivantes dans les tables que vous avez créées.
 |4|1|3|2025-04-01|2025-04-22|NULL|
 |5|4|2|2025-04-05|2025-04-26|NULL|
 
-**Instructions pour l'insertion (À faire par vous) :**
+<details>
+<summary>Requêtes d'insertion de données</summary>
 
-Utilisez l'instruction `INSERT INTO` pour ajouter ces données dans les tables correspondantes.
+```sql
+-- Insertion de données pour la table ADHERENT
+INSERT INTO ADHERENT (id_adherent, nom, prenom, adresse, telephone, date_inscription) VALUES
+(1, 'Traoré', 'Fatou', 'Cité Keur Gorgui, Thiès', '77 123 45 67', '2024-01-15'),
+(2, 'Diop', 'Aliou', 'Quartier Grand Standing, Mbour', '76 987 65 43', '2024-03-20'),
+(3, 'Sow', 'Aminata', 'Centre Ville, Saly Portudal', '78 555 11 22', '2024-05-10'),
+(4, 'Mbaye', 'Moussa', 'Sicap Liberté, Dakar', '70 777 88 99', '2024-07-01');
+
+-- Insertion de données pour la table AUTEUR
+INSERT INTO AUTEUR (id_auteur, nom_auteur, prenom_auteur) VALUES
+(1, 'Sembène', 'Ousmane'),
+(2, 'Kane', 'Cheikh Hamidou'),
+(3, 'Ba', 'Mariama'),
+(4, 'Soyinka', 'Wole');
+
+-- Insertion de données pour la table GENRE
+INSERT INTO GENRE (id_genre, nom_genre) VALUES
+(1, 'Roman'),
+(2, 'Essai'),
+(3, 'Théâtre'),
+(4, 'Poésie');
+
+-- Insertion de données pour la table LIVRE
+INSERT INTO LIVRE (id_livre, titre, isbn, id_auteur, id_genre, nombre_exemplaires) VALUES
+(1, 'Les Bouts de Bois de Dieu', '9782708701506', 1, 1, 3),
+(2, 'L''Aventure Ambiguë', '9782253033682', 2, 1, 2),
+(3, 'Une si longue lettre', '9782842140047', 3, 1, 4),
+(4, 'La Tragédie du Roi Christophe', '9782080703414', 1, 3, 2),
+(5, 'Le Soleil des Indépendances', '9782253014933', 4, 1, 3),
+(6, 'Anthologie de la nouvelle poésie nègre et malgache de langue française', '9782708700301', 4, 4, 1);
+
+-- Insertion de données pour la table EMPRUNT
+INSERT INTO EMPRUNT (id_emprunt, id_livre, id_adherent, date_emprunt, date_retour_prevue, date_retour_effective) VALUES
+(1, 1, 1, '2025-03-10', '2025-03-31', '2025-03-28'),
+(2, 2, 2, '2025-03-15', '2025-04-05', NULL),
+(3, 3, 1, '2025-03-25', '2025-04-15', '2025-04-12'),
+(4, 1, 3, '2025-04-01', '2025-04-22', NULL),
+(5, 4, 2, '2025-04-05', '2025-04-26', NULL);
+```
+
+</details>
 
 **4. Requêtes SQL (Beaucoup !) (À faire par vous)**
 
@@ -192,5 +231,3 @@ Voici une autre longue liste de requêtes SQL pour votre base de données de bib
 48. Sélectionnez toutes les informations de cette vue.
 49. Trouvez les livres qui ont été empruntés plus de deux fois.
 50. Identifiez les adhérents qui ont emprunté des livres de tous les genres disponibles (requête plus complexe).
-
-J'espère que cet exercice vous plaira ! N'hésitez pas si vous avez des questions sur la structure ou l'insertion des données. À vous de jouer avec ces requêtes !

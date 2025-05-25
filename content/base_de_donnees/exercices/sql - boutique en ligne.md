@@ -4,8 +4,6 @@ Absolument ! Voici un exercice complet de SQL (SQLite) pour une boutique en lign
 
 **1. Modèle Logique des Données (MLD) en ER Diagram**
 
-Extrait de code
-
 ```mermaid
 erDiagram
     CLIENT ||--o{ COMMANDE : passe
@@ -78,9 +76,9 @@ Maintenant, insérez les données suivantes dans les tables que vous avez créé
 | ------------- | ------- | ---------- | -------------------------- | ----------------------------------- | -------------- |
 | **id_client** | **nom** | **prenom** | **email**                  | **adresse**                         | **telephone**  |
 | 1             | Dupont  | Jean       | jean.dupont@email.com      | 10 rue de la Paix, 75001 Paris      | 01 23 45 67 89 |
-| 2             | Lefevre | Sophie     | [adresse e-mail supprimée] | 5 avenue des Lilas, 69003 Lyon      | 06 98 76 54 32 |
-| 3             | Martin  | Pierre     | [adresse e-mail supprimée] | 12 boulevard Carnot, 31000 Toulouse | 05 61 01 02 03 |
-| 4             | Dubois  | Alice      | [adresse e-mail supprimée] | 3 rue du Château, 44000 Nantes      | 02 40 50 60 70 |
+| 2             | Lefevre | Sophie     | sophie.lefevre@email.com | 5 avenue des Lilas, 69003 Lyon      | 06 98 76 54 32 |
+| 3             | Martin  | Pierre     | pierre.martin@email.com | 12 boulevard Carnot, 31000 Toulouse | 05 61 01 02 03 |
+| 4             | Dubois  | Alice      | alice.dubois@email.com | 3 rue du Château, 44000 Nantes      | 02 40 50 60 70 |
 
 **Table `CATEGORIE`:**
 
@@ -110,9 +108,9 @@ Maintenant, insérez les données suivantes dans les tables que vous avez créé
 |   |   |   |   |   |
 |---|---|---|---|---|
 |**id_fournisseur**|**nom_fournisseur**|**adresse_fournisseur**|**telephone_fournisseur**|**email_fournisseur**|
-|1|Editions XYZ|15 rue des Livres, 75005 Paris|01 44 44 44 44|[adresse e-mail supprimée]|
-|2|TechPlus SA|20 avenue de la Tech, 69100 Villeurbanne|04 78 88 88 88|[adresse e-mail supprimée]|
-|3|Mode & Cie|8 rue des Textiles, 59000 Lille|03 20 30 40 50|[adresse e-mail supprimée]|
+|1|Editions XYZ|15 rue des Livres, 75005 Paris|01 44 44 44 44|contact@editionsxyz.com|
+|2|TechPlus SA|20 avenue de la Tech, 69100 Villeurbanne|04 78 88 88 88|info@techplus.com|
+|3|Mode & Cie|8 rue des Textiles, 59000 Lille|03 20 30 40 50|contact@modeetcie.com|
 
 **Table `COMMANDE`:**
 
@@ -135,18 +133,57 @@ Maintenant, insérez les données suivantes dans les tables que vous avez créé
 |4|3|3|2|19.90|
 |5|4|6|1|149.00|
 
-**Instructions pour l'insertion (À faire par vous) :**
+<details>
+<summary>Requêtes d'insertion de données</summary>
 
-Utilisez l'instruction `INSERT INTO` pour ajouter ces données dans les tables correspondantes. Par exemple :
+```sql
+-- Insertion de données pour la table CLIENT
+INSERT INTO CLIENT (id_client, nom, prenom, email, adresse, telephone) VALUES
+(1, 'Dupont', 'Jean', 'jean.dupont@email.com', '10 rue de la Paix, 75001 Paris', '01 23 45 67 89'),
+(2, 'Lefevre', 'Sophie', 'sophie.lefevre@email.com', '5 avenue des Lilas, 69003 Lyon', '06 98 76 54 32'),
+(3, 'Martin', 'Pierre', 'pierre.martin@email.com', '12 boulevard Carnot, 31000 Toulouse', '05 61 01 02 03'),
+(4, 'Dubois', 'Alice', 'alice.dubois@email.com', '3 rue du Château, 44000 Nantes', '02 40 50 60 70');
 
-SQL
+-- Insertion de données pour la table CATEGORIE
+INSERT INTO CATEGORIE (id_categorie, nom_categorie) VALUES
+(1, 'Livres'),
+(2, 'Électronique'),
+(3, 'Vêtements'),
+(4, 'Maison');
 
+-- Insertion de données pour la table PRODUIT
+INSERT INTO PRODUIT (id_produit, nom_produit, description, prix, id_categorie, stock, id_fournisseur) VALUES
+(1, 'Le Seigneur des Anneaux', 'Roman de J.R.R. Tolkien', 25.50, 1, 50, 1),
+(2, 'Smartphone dernier modèle', 'Écran OLED, 128Go de stockage, 5G', 799.99, 2, 25, 2),
+(3, 'T-shirt en coton bio', 'Taille M, couleur bleu marine', 19.90, 3, 100, 3),
+(4, 'Lampe de chevet design', 'Lumière LED, 3 intensités', 45.00, 4, 30, 2),
+(5, 'Les Misérables', 'Roman de Victor Hugo', 18.75, 1, 75, 1),
+(6, 'Casque audio sans fil', 'Bluetooth, réduction de bruit active', 149.00, 2, 40, 2),
+(7, 'Jean slim fit', 'Taille 32, couleur noir', 59.95, 3, 60, 3);
+
+-- Insertion de données pour la table FOURNISSEUR
+INSERT INTO FOURNISSEUR (id_fournisseur, nom_fournisseur, adresse_fournisseur, telephone_fournisseur, email_fournisseur) VALUES
+(1, 'Editions XYZ', '15 rue des Livres, 75005 Paris', '01 44 44 44 44', 'contact@editionsxyz.com'),
+(2, 'TechPlus SA', '20 avenue de la Tech, 69100 Villeurbanne', '04 78 88 88 88', 'info@techplus.com'),
+(3, 'Mode & Cie', '8 rue des Textiles, 59000 Lille', '03 20 30 40 50', 'contact@modeetcie.com');
+
+-- Insertion de données pour la table COMMANDE
+INSERT INTO COMMANDE (id_commande, date_commande, id_client, montant_total, etat) VALUES
+(1, '2025-04-01', 1, 102.00, 'Livrée'),
+(2, '2025-04-03', 2, 819.89, 'En cours'),
+(3, '2025-04-05', 1, 39.80, 'Préparée'),
+(4, '2025-04-07', 3, 149.00, 'Livrée');
+
+-- Insertion de données pour la table LIGNE_COMMANDE
+INSERT INTO LIGNE_COMMANDE (id_ligne_commande, id_commande, id_produit, quantite, prix_unitaire) VALUES
+(1, 1, 1, 2, 25.50),
+(2, 1, 3, 3, 16.99),
+(3, 2, 2, 1, 799.99),
+(4, 3, 3, 2, 19.90),
+(5, 4, 6, 1, 149.00);
 ```
-INSERT INTO CLIENT (id_client, nom, prenom, email, adresse, telephone)
-VALUES (1, 'Dupont', 'Jean', 'jean.dupont@email.com', '10 rue de la Paix, 75001 Paris', '01 23 45 67 89');
 
--- Et ainsi de suite pour toutes les tables et toutes les lignes de données.
-```
+</details>
 
 **4. Requêtes SQL (Beaucoup !) (À faire par vous)**
 
@@ -223,5 +260,3 @@ Voici une longue liste de requêtes SQL que vous devez essayer d'écrire et d'ex
 
 50. Créez une vue qui affiche le nom du client et le montant total de ses commandes.
 51. Sélectionnez toutes les informations de cette vue.
-
-Amusez-vous bien avec cet exercice ! N'hésitez pas si vous avez des questions sur la création de la base de données ou l'insertion des données. Je suis là pour vous aider à chaque étape (sauf pour les corrections des requêtes pour le moment 😉).

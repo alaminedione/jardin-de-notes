@@ -79,9 +79,9 @@ Insérez des données pour configurer votre système d'authentification et d'aut
 
 | nom\_utilisateur | mot\_de\_passe (hash) | email                       | est\_actif |
 |-----------------|-----------------------|-----------------------------|------------|
-| alice           | $2a$10$examplehash1    | [adresse e-mail supprimée]   | TRUE       |
-| bob             | $2a$10$anotherhash2  | [adresse e-mail supprimée] | TRUE       |
-| charlie         | $2a$10$yetanother3   | [adresse e-mail supprimée] | FALSE      |
+| alice           | $2a$10$examplehash1    | alice@example.com   | TRUE       |
+| bob             | $2a$10$anotherhash2  | bob@example.com | TRUE       |
+| charlie         | $2a$10$yetanother3   | charlie@example.com | FALSE      |
 
 **Table `ROLE`:**
 
@@ -140,9 +140,63 @@ Insérez des données pour configurer votre système d'authentification et d'aut
 | eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxI… | 1               | 1          | 2025-04-09 02:00:00     | 2025-04-09 03:00:00     | rtoken\_alice\_mobile                 | read,write |
 | eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyI… | 2               | 2          | 2025-04-09 02:05:00     | 2025-04-09 02:15:00     | rtoken\_bob\_web                      | read       |
 
-**Instructions pour l'insertion (À faire par vous - en PostgreSQL) :**
+<details>
+<summary>Requêtes d'insertion de données</summary>
 
-Utilisez l'instruction `INSERT INTO` pour ajouter ces données dans les tables correspondantes. N'oubliez pas que les mots de passe dans la table `UTILISATEUR` devraient en réalité être des hachages sécurisés (comme ceux générés par bcrypt).
+```sql
+-- Insertion de données pour la table UTILISATEUR
+INSERT INTO UTILISATEUR (id_utilisateur, nom_utilisateur, mot_de_passe, email, est_actif, date_creation) VALUES
+(1, 'alice', '$2a$10$examplehash1', 'alice@example.com', TRUE, '2025-04-01'),
+(2, 'bob', '$2a$10$anotherhash2', 'bob@example.com', TRUE, '2025-04-02'),
+(3, 'charlie', '$2a$10$yetanother3', 'charlie@example.com', FALSE, '2025-04-03');
+
+-- Insertion de données pour la table ROLE
+INSERT INTO ROLE (id_role, nom_role, description) VALUES
+(1, 'admin', 'Administrateur système'),
+(2, 'editor', 'Éditeur de contenu'),
+(3, 'viewer', 'Lecteur seul');
+
+-- Insertion de données pour la table PERMISSION
+INSERT INTO PERMISSION (id_permission, nom_permission, description) VALUES
+(1, 'create', 'Créer des ressources'),
+(2, 'read', 'Lire des ressources'),
+(3, 'update', 'Mettre à jour des ressources'),
+(4, 'delete', 'Supprimer des ressources'),
+(5, 'publish', 'Publier du contenu');
+
+-- Insertion de données pour la table ROLE_UTILISATEUR
+INSERT INTO ROLE_UTILISATEUR (id_role_utilisateur, id_utilisateur, id_role) VALUES
+(1, 1, 1), -- Alice est admin
+(2, 2, 2), -- Bob est éditeur
+(3, 2, 3), -- Bob est aussi lecteur
+(4, 3, 3); -- Charlie est lecteur (mais inactif)
+
+-- Insertion de données pour la table PERMISSION_ROLE
+INSERT INTO PERMISSION_ROLE (id_permission_role, id_role, id_permission) VALUES
+(1, 1, 1), -- Admin peut créer
+(2, 1, 2), -- Admin peut lire
+(3, 1, 3), -- Admin peut mettre à jour
+(4, 1, 4), -- Admin peut supprimer
+(5, 1, 5), -- Admin peut publier
+(6, 2, 1), -- Éditeur peut créer
+(7, 2, 2), -- Éditeur peut lire
+(8, 2, 3), -- Éditeur peut mettre à jour
+(9, 2, 5), -- Éditeur peut publier
+(10, 3, 2); -- Lecteur peut lire
+
+-- Insertion de données pour la table CLIENT_OAUTH
+INSERT INTO CLIENT_OAUTH (id_client, client_id, client_secret, redirect_uri, grant_types, scope) VALUES
+(1, 'mobile_app', 'secret_mobile', 'com.example.mobile://callback', 'authorization_code,password,refresh_token', 'read,write'),
+(2, 'web_app', 'secret_web', 'https://example.com/callback', 'authorization_code', 'read'),
+(3, 'trusted_cli', 'trusted_secret', NULL, 'client_credentials', 'api');
+
+-- Insertion de données pour la table JETON_ACCES
+INSERT INTO JETON_ACCES (id_jeton, jeton, id_utilisateur, id_client, date_creation, date_expiration, refresh_token, scope) VALUES
+(1, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxI…', 1, 1, '2025-04-09 02:00:00', '2025-04-09 03:00:00', 'rtoken_alice_mobile', 'read,write'),
+(2, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyI…', 2, 2, '2025-04-09 02:05:00', '2025-04-09 02:15:00', 'rtoken_bob_web', 'read');
+```
+
+</details>
 
 **4. Requêtes SQL Avancées (Beaucoup \! - en PostgreSQL)**
 
@@ -215,5 +269,3 @@ Voici une série de requêtes SQL pour explorer votre système d'authentificatio
 48. Trouvez les utilisateurs qui ont plus de deux rôles.
 49. Affichez les rôles qui ont plus de quatre permissions.
 50. Trouvez les utilisateurs actifs qui ont au moins une permission 'update' et dont l'email contient '@example.com' (si vous aviez plus de données email variées).
-
-Et ainsi de suite \! Cet exercice vous permet de concevoir une base de données robuste pour la gestion de l'authentification et de l'autorisation avec des concepts clés comme les utilisateurs, les rôles, les permissions et le support pour OAuth 2.0 (clients et jetons). N'hésitez pas à imaginer d'autres requêtes pour explorer les relations entre ces entités. Bonne exploration \!

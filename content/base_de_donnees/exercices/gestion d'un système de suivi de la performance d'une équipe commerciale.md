@@ -2,8 +2,6 @@
 
 **1. Modèle Logique des Données (MLD) en ER Diagram**
 
-Extrait de code
-
 ```mermaid
 erDiagram
 
@@ -83,6 +81,137 @@ Créez une nouvelle base de données nommée `performance_commerciale` dans Post
 **3. Insertion de Données (Instructions et Données)**
 
 Insérez des données variées dans toutes les tables. Créez plusieurs équipes de vente avec des managers, différents vendeurs affectés à ces équipes, des clients dans divers secteurs, des produits, des objectifs pour différents vendeurs et années, des opportunités de vente à différentes étapes et avec différentes probabilités, et des activités liées à ces opportunités.
+
+**Table `EQUIPE_VENTE`:**
+
+| id\_equipe | nom\_equipe  | id\_manager |
+|------------|--------------|-------------|
+| 1          | Équipe Alpha | 1           |
+| 2          | Équipe Beta  | 3           |
+
+**Table `VENDEUR`:**
+
+| id\_vendeur | id\_equipe | nom     | prenom  | email                      | telephone  | date\_embauche |
+|-------------|------------|---------|---------|----------------------------|------------|----------------|
+| 1           | 1          | Durand  | Paul    | paul.durand@example.com    | 0612345678 | 2023-01-10     |
+| 2           | 1          | Petit   | Laura   | laura.petit@example.com    | 0623456789 | 2023-03-15     |
+| 3           | 2          | Bernard | Marc    | marc.bernard@example.com   | 0634567890 | 2023-02-20     |
+| 4           | 2          | Dubois  | Julie   | julie.dubois@example.com   | 0645678901 | 2023-04-01     |
+
+**Table `CLIENT`:**
+
+| id\_client | nom\_entreprise  | contact\_principal | email                      | telephone  | secteur\_activite | adresse                  |
+|------------|------------------|--------------------|----------------------------|------------|-------------------|--------------------------|
+| 1          | Global Corp      | Alice Smith        | alice.smith@globalcorp.com | 0123456789 | Technologie       | 123 Tech Road, Paris     |
+| 2          | Innov Solutions  | Bob Johnson        | bob.j@innov.com            | 0234567890 | Services          | 45 Business Ave, Lyon    |
+| 3          | Green Energy     | Carla White        | carla.w@greenenergy.com    | 0345678901 | Énergie           | 789 Green St, Marseille  |
+| 4          | Fashion Trends   | David Brown        | david.b@fashion.com        | 0456789012 | Mode              | 101 Style Blvd, Lille    |
+
+**Table `PRODUIT`:**
+
+| id\_produit | nom\_produit                   | description                                     | prix     |
+|-------------|--------------------------------|-------------------------------------------------|----------|
+| 1           | Logiciel CRM Pro               | Solution de gestion de la relation client avancée | 1500.00  |
+| 2           | Service de Consulting IT       | Conseil et implémentation de solutions informatiques | 2500.00  |
+| 3           | Panneaux Solaires Haute Performance | Panneaux solaires pour usage industriel         | 10000.00 |
+| 4           | Plateforme E-commerce B2B      | Solution complète pour le commerce inter-entreprises | 5000.00  |
+
+**Table `OBJECTIF`:**
+
+| id\_objectif | id\_vendeur | annee | type\_objectif | valeur\_cible | date\_creation |
+|--------------|-------------|-------|----------------|---------------|----------------|
+| 1            | 1           | 2024  | Ventes         | 100000.00     | 2024-01-01     |
+| 2            | 2           | 2024  | Ventes         | 80000.00      | 2024-01-01     |
+| 3            | 3           | 2024  | Ventes         | 120000.00     | 2024-01-01     |
+| 4            | 4           | 2024  | Ventes         | 90000.00      | 2024-01-01     |
+| 5            | 1           | 2025  | Ventes         | 110000.00     | 2025-01-01     |
+
+**Table `OPPORTUNITE`:**
+
+| id\_opportunite | id\_client | id\_vendeur | id\_produit | nom\_opportunite                 | date\_creation | date\_echeance | etape\_vente | valeur\_potentielle | probabilite\_succes | date\_cloture | raison\_perte    |
+|-----------------|------------|-------------|-------------|----------------------------------|----------------|----------------|--------------|---------------------|---------------------|---------------|------------------|
+| 1               | 1          | 1           | 1           | Migration CRM Global Corp        | 2024-05-01     | 2024-06-30     | Proposition  | 15000.00            | 0.7                 | NULL          | NULL             |
+| 2               | 2          | 2           | 2           | Audit IT Innov Solutions         | 2024-05-10     | 2024-06-20     | Négociation  | 5000.00             | 0.8                 | NULL          | NULL             |
+| 3               | 3          | 3           | 3           | Projet Solaire Green Energy Phase 1 | 2024-04-15     | 2024-05-31     | Gagnée       | 20000.00            | 0.95                | 2024-05-28    | NULL             |
+| 4               | 4          | 4           | 4           | Refonte E-commerce Fashion Trends | 2024-05-05     | 2024-07-15     | Qualification| 8000.00             | 0.6                 | NULL          | NULL             |
+| 5               | 1          | 1           | 2           | Consulting Sécurité Global Corp  | 2024-06-01     | 2024-07-31     | Perdue       | 7000.00             | 0.4                 | 2024-07-20    | Prix trop élevé  |
+| 6               | 2          | 2           | 1           | Extension CRM Innov Solutions    | 2024-06-10     | 2024-08-15     | Proposition  | 12000.00            | 0.75                | NULL          | NULL             |
+
+**Table `ACTIVITE`:**
+
+| id\_activite | id\_opportunite | id\_vendeur | date\_heure         | type\_activite | description                          | statut     |
+|--------------|-----------------|-------------|---------------------|----------------|--------------------------------------|------------|
+| 1            | 1               | 1           | 2024-05-05 10:00:00 | Appel          | Appel de qualification initial       | Réalisée   |
+| 2            | 1               | 1           | 2024-05-15 14:30:00 | RDV            | Présentation de la solution CRM      | Réalisée   |
+| 3            | 2               | 2           | 2024-05-12 11:00:00 | Email          | Envoi proposition audit IT           | Réalisée   |
+| 4            | 3               | 3           | 2024-04-20 09:00:00 | RDV            | Négociation finale projet solaire    | Réalisée   |
+| 5            | 4               | 4           | 2024-05-08 16:00:00 | Appel          | Premier contact client Fashion Trends| Réalisée   |
+| 6            | 1               | 1           | 2024-06-25 10:00:00 | Rappel         | Rappel avant échéance opportunité CRM| Planifiée  |
+| 7            | 6               | 2           | 2024-06-12 15:00:00 | RDV            | Discussion sur l'extension CRM       | Planifiée  |
+
+<details>
+<summary>Requêtes d'insertion de données</summary>
+
+```sql
+-- Insertion de données pour la table EQUIPE_VENTE
+INSERT INTO EQUIPE_VENTE (id_equipe, nom_equipe, id_manager) VALUES
+(1, 'Équipe Alpha', NULL), -- Manager sera défini après insertion des vendeurs
+(2, 'Équipe Beta', NULL);
+
+-- Insertion de données pour la table VENDEUR
+INSERT INTO VENDEUR (id_vendeur, id_equipe, nom, prenom, email, telephone, date_embauche) VALUES
+(1, 1, 'Durand', 'Paul', 'paul.durand@example.com', '0612345678', '2023-01-10'),
+(2, 1, 'Petit', 'Laura', 'laura.petit@example.com', '0623456789', '2023-03-15'),
+(3, 2, 'Bernard', 'Marc', 'marc.bernard@example.com', '0634567890', '2023-02-20'),
+(4, 2, 'Dubois', 'Julie', 'julie.dubois@example.com', '0645678901', '2023-04-01');
+
+-- Mise à jour des managers d'équipe
+UPDATE EQUIPE_VENTE SET id_manager = 1 WHERE id_equipe = 1; -- Paul Durand est manager de l'Équipe Alpha
+UPDATE EQUIPE_VENTE SET id_manager = 3 WHERE id_equipe = 2; -- Marc Bernard est manager de l'Équipe Beta
+
+-- Insertion de données pour la table CLIENT
+INSERT INTO CLIENT (id_client, nom_entreprise, contact_principal, email, telephone, secteur_activite, adresse) VALUES
+(1, 'Global Corp', 'Alice Smith', 'alice.smith@globalcorp.com', '0123456789', 'Technologie', '123 Tech Road, Paris'),
+(2, 'Innov Solutions', 'Bob Johnson', 'bob.j@innov.com', '0234567890', 'Services', '45 Business Ave, Lyon'),
+(3, 'Green Energy', 'Carla White', 'carla.w@greenenergy.com', '0345678901', 'Énergie', '789 Green St, Marseille'),
+(4, 'Fashion Trends', 'David Brown', 'david.b@fashion.com', '0456789012', 'Mode', '101 Style Blvd, Lille');
+
+-- Insertion de données pour la table PRODUIT
+INSERT INTO PRODUIT (id_produit, nom_produit, description, prix) VALUES
+(1, 'Logiciel CRM Pro', 'Solution de gestion de la relation client avancée', 1500.00),
+(2, 'Service de Consulting IT', 'Conseil et implémentation de solutions informatiques', 2500.00),
+(3, 'Panneaux Solaires Haute Performance', 'Panneaux solaires pour usage industriel', 10000.00),
+(4, 'Plateforme E-commerce B2B', 'Solution complète pour le commerce inter-entreprises', 5000.00);
+
+-- Insertion de données pour la table OBJECTIF
+INSERT INTO OBJECTIF (id_objectif, id_vendeur, annee, type_objectif, valeur_cible, date_creation) VALUES
+(1, 1, 2024, 'Ventes', 100000.00, '2024-01-01'),
+(2, 2, 2024, 'Ventes', 80000.00, '2024-01-01'),
+(3, 3, 2024, 'Ventes', 120000.00, '2024-01-01'),
+(4, 4, 2024, 'Ventes', 90000.00, '2024-01-01'),
+(5, 1, 2025, 'Ventes', 110000.00, '2025-01-01');
+
+-- Insertion de données pour la table OPPORTUNITE
+INSERT INTO OPPORTUNITE (id_opportunite, id_client, id_vendeur, id_produit, nom_opportunite, date_creation, date_echeance, etape_vente, valeur_potentielle, probabilite_succes, date_cloture, raison_perte) VALUES
+(1, 1, 1, 1, 'Migration CRM Global Corp', '2024-05-01', '2024-06-30', 'Proposition', 15000.00, 0.7, NULL, NULL),
+(2, 2, 2, 2, 'Audit IT Innov Solutions', '2024-05-10', '2024-06-20', 'Négociation', 5000.00, 0.8, NULL, NULL),
+(3, 3, 3, 3, 'Projet Solaire Green Energy Phase 1', '2024-04-15', '2024-05-31', 'Gagnée', 20000.00, 0.95, '2024-05-28', NULL),
+(4, 4, 4, 4, 'Refonte E-commerce Fashion Trends', '2024-05-05', '2024-07-15', 'Qualification', 8000.00, 0.6, NULL, NULL),
+(5, 1, 1, 2, 'Consulting Sécurité Global Corp', '2024-06-01', '2024-07-31', 'Perdue', 7000.00, 0.4, '2024-07-20', 'Prix trop élevé'),
+(6, 2, 2, 1, 'Extension CRM Innov Solutions', '2024-06-10', '2024-08-15', 'Proposition', 12000.00, 0.75, NULL, NULL);
+
+-- Insertion de données pour la table ACTIVITE
+INSERT INTO ACTIVITE (id_activite, id_opportunite, id_vendeur, date_heure, type_activite, description, statut) VALUES
+(1, 1, 1, '2024-05-05 10:00:00', 'Appel', 'Appel de qualification initial', 'Réalisée'),
+(2, 1, 1, '2024-05-15 14:30:00', 'RDV', 'Présentation de la solution CRM', 'Réalisée'),
+(3, 2, 2, '2024-05-12 11:00:00', 'Email', 'Envoi proposition audit IT', 'Réalisée'),
+(4, 3, 3, '2024-04-20 09:00:00', 'RDV', 'Négociation finale projet solaire', 'Réalisée'),
+(5, 4, 4, '2024-05-08 16:00:00', 'Appel', 'Premier contact client Fashion Trends', 'Réalisée'),
+(6, 1, 1, '2024-06-25 10:00:00', 'Rappel', 'Rappel avant échéance opportunité CRM', 'Planifiée'),
+(7, 6, 2, '2024-06-12 15:00:00', 'RDV', 'Discussion sur l''extension CRM', 'Planifiée');
+```
+
+</details>
 
 **4. Fonctionnalités Avancées (À faire par vous - en PostgreSQL)**
 

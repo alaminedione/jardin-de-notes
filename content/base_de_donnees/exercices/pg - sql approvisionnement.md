@@ -4,8 +4,6 @@ Parfait ! Puisque vous êtes prêt pour un autre défi conséquent, cet exercice
 
 **1. Modèle Logique des Données (MLD) en ER Diagram**
 
-Extrait de code
-
 ```mermaid
 
 erDiagram
@@ -102,6 +100,149 @@ Créez une nouvelle base de données nommée `gestion_approvisionnement` dans Po
 **3. Insertion de Données (Instructions et Données)**
 
 Insérez des données variées dans toutes les tables. N'hésitez pas à créer plusieurs fournisseurs, entrepôts, produits (avec des stocks différents, certains proches du seuil de réapprovisionnement), des commandes fournisseurs (certaines livrées, d'autres en cours), des clients, et des commandes clients (avec différents statuts). Insérez également quelques mouvements de stock (entrées et sorties) pour différents produits et entrepôts.
+
+**Table `FOURNISSEUR`:**
+
+| id\_fournisseur | nom\_fournisseur    | adresse                  | ville       | pays    | telephone      | email                      |
+|-----------------|---------------------|--------------------------|-------------|---------|----------------|----------------------------|
+| 1               | Fournisseur A       | 10 Rue des Fournisseurs  | Paris       | France  | 0123456789     | contactA@fournisseur.com   |
+| 2               | Fournisseur B       | 20 Avenue des Stocks     | Lyon        | France  | 0987654321     | contactB@fournisseur.com   |
+| 3               | Global Supplies Inc.| 123 Main St              | New York    | USA     | 1-800-SUPPLY   | info@globalsupplies.com    |
+
+**Table `ENTREPOT`:**
+
+| id\_entrepot | nom\_entrepot     | adresse                  | ville       | pays    |
+|--------------|-------------------|--------------------------|-------------|---------|
+| 1            | Entrepôt Central  | 50 Rue de l'Entrepôt     | Paris       | France  |
+| 2            | Entrepôt Sud      | 100 Chemin du Sud        | Marseille   | France  |
+| 3            | Warehouse West    | 456 Industrial Blvd      | Los Angeles | USA     |
+
+**Table `PRODUIT`:**
+
+| id\_produit | nom\_produit        | description                 | prix\_achat | prix\_vente | stock\_actuel | seuil\_reapprovisionnement | id\_fournisseur |
+|-------------|---------------------|-----------------------------|-------------|-------------|---------------|----------------------------|-----------------|
+| 1           | Produit X           | Description du Produit X    | 10.00       | 15.00       | 50            | 20                         | 1               |
+| 2           | Produit Y           | Description du Produit Y    | 25.00       | 35.00       | 15            | 10                         | 1               |
+| 3           | Produit Z           | Description du Produit Z    | 5.00        | 8.00        | 100           | 30                         | 2               |
+| 4           | Article Alpha       | Un article de haute qualité | 50.00       | 75.00       | 5             | 5                          | 3               |
+
+**Table `CLIENT`:**
+
+| id\_client | nom    | prenom | email                    | adresse               | ville     | pays   | telephone      | date\_inscription |
+|------------|--------|--------|--------------------------|-----------------------|-----------|--------|----------------|-------------------|
+| 1          | Dupont | Jean   | jean.dupont@client.com   | 1 Rue du Client       | Paris     | France | 0611223344     | 2024-01-01        |
+| 2          | Martin | Sophie | sophie.martin@client.com | 2 Avenue du Commerce  | Lyon      | France | 0755667788     | 2024-02-15        |
+| 3          | Smith  | John   | john.smith@client.com    | 789 Customer Rd       | London    | UK     | 44-20-12345678 | 2024-03-01        |
+
+**Table `COMMANDE_FOURNISSEUR`:**
+
+| id\_commande\_fournisseur | id\_fournisseur | date\_commande | date\_livraison\_prevue | statut   | reference    |
+|---------------------------|-----------------|----------------|-------------------------|----------|--------------|
+| 1                         | 1               | 2024-04-01     | 2024-04-10              | Livrée   | CF-2024-001  |
+| 2                         | 2               | 2024-04-05     | 2024-04-15              | En cours | CF-2024-002  |
+| 3                         | 1               | 2024-05-01     | 2024-05-10              | En cours | CF-2024-003  |
+
+**Table `LIGNE_COMMANDE_FOURNISSEUR`:**
+
+| id\_ligne\_commande\_fournisseur | id\_commande\_fournisseur | id\_produit | quantite\_commandee | prix\_unitaire\_achat |
+|----------------------------------|---------------------------|-------------|---------------------|-----------------------|
+| 1                                | 1                         | 1           | 30                  | 10.00                 |
+| 2                                | 1                         | 3           | 50                  | 5.00                  |
+| 3                                | 2                         | 2           | 20                  | 25.00                 |
+| 4                                | 3                         | 1           | 40                  | 10.00                 |
+
+**Table `COMMANDE_CLIENT`:**
+
+| id\_commande\_client | id\_client | date\_commande | statut   | montant\_total | reference    |
+|----------------------|------------|----------------|----------|----------------|--------------|
+| 1                    | 1          | 2024-04-02     | Livrée   | 45.00          | CC-2024-001  |
+| 2                    | 2          | 2024-04-06     | En cours | 70.00          | CC-2024-002  |
+| 3                    | 1          | 2024-05-03     | En cours | 30.00          | CC-2024-003  |
+
+**Table `LIGNE_COMMANDE_CLIENT`:**
+
+| id\_ligne\_commande\_client | id\_commande\_client | id\_produit | quantite\_commandee | prix\_unitaire\_vente |
+|-----------------------------|----------------------|-------------|---------------------|-----------------------|
+| 1                           | 1                    | 1           | 3                   | 15.00                 |
+| 2                           | 2                    | 2           | 2                   | 35.00                 |
+| 3                           | 3                    | 1           | 2                   | 15.00                 |
+
+**Table `MOUVEMENT_STOCK`:**
+
+| id\_mouvement | id\_produit | id\_entrepot | date\_mouvement     | type\_mouvement | quantite | reference   |
+|---------------|-------------|--------------|---------------------|-----------------|----------|-------------|
+| 1             | 1           | 1            | 2024-04-01 09:00:00 | Entree          | 50       | CF-2024-001 |
+| 2             | 3           | 1            | 2024-04-01 09:30:00 | Entree          | 100      | CF-2024-001 |
+| 3             | 1           | 1            | 2024-04-02 10:00:00 | Sortie          | 3        | CC-2024-001 |
+| 4             | 2           | 2            | 2024-04-05 11:00:00 | Entree          | 20       | CF-2024-002 |
+| 5             | 2           | 2            | 2024-04-06 12:00:00 | Sortie          | 2        | CC-2024-002 |
+| 6             | 1           | 1            | 2024-05-03 14:00:00 | Sortie          | 2        | CC-2024-003 |
+
+<details>
+<summary>Requêtes d'insertion de données</summary>
+
+```sql
+-- Insertion de données pour la table FOURNISSEUR
+INSERT INTO FOURNISSEUR (id_fournisseur, nom_fournisseur, adresse, ville, pays, telephone, email) VALUES
+(1, 'Fournisseur A', '10 Rue des Fournisseurs', 'Paris', 'France', '0123456789', 'contactA@fournisseur.com'),
+(2, 'Fournisseur B', '20 Avenue des Stocks', 'Lyon', 'France', '0987654321', 'contactB@fournisseur.com'),
+(3, 'Global Supplies Inc.', '123 Main St', 'New York', 'USA', '1-800-SUPPLY', 'info@globalsupplies.com');
+
+-- Insertion de données pour la table ENTREPOT
+INSERT INTO ENTREPOT (id_entrepot, nom_entrepot, adresse, ville, pays) VALUES
+(1, 'Entrepôt Central', '50 Rue de l''Entrepôt', 'Paris', 'France'),
+(2, 'Entrepôt Sud', '100 Chemin du Sud', 'Marseille', 'France'),
+(3, 'Warehouse West', '456 Industrial Blvd', 'Los Angeles', 'USA');
+
+-- Insertion de données pour la table PRODUIT
+INSERT INTO PRODUIT (id_produit, nom_produit, description, prix_achat, prix_vente, stock_actuel, seuil_reapprovisionnement, id_fournisseur) VALUES
+(1, 'Produit X', 'Description du Produit X', 10.00, 15.00, 50, 20, 1),
+(2, 'Produit Y', 'Description du Produit Y', 25.00, 35.00, 15, 10, 1), -- Proche du seuil
+(3, 'Produit Z', 'Description du Produit Z', 5.00, 8.00, 100, 30, 2),
+(4, 'Article Alpha', 'Un article de haute qualité', 50.00, 75.00, 5, 5, 3); -- Au seuil
+
+-- Insertion de données pour la table CLIENT
+INSERT INTO CLIENT (id_client, nom, prenom, email, adresse, ville, pays, telephone, date_inscription) VALUES
+(1, 'Dupont', 'Jean', 'jean.dupont@client.com', '1 Rue du Client', 'Paris', 'France', '0611223344', '2024-01-01'),
+(2, 'Martin', 'Sophie', 'sophie.martin@client.com', '2 Avenue du Commerce', 'Lyon', 'France', '0755667788', '2024-02-15'),
+(3, 'Smith', 'John', 'john.smith@client.com', '789 Customer Rd', 'London', 'UK', '44-20-12345678', '2024-03-01');
+
+-- Insertion de données pour la table COMMANDE_FOURNISSEUR
+INSERT INTO COMMANDE_FOURNISSEUR (id_commande_fournisseur, id_fournisseur, date_commande, date_livraison_prevue, statut, reference) VALUES
+(1, 1, '2024-04-01', '2024-04-10', 'Livrée', 'CF-2024-001'),
+(2, 2, '2024-04-05', '2024-04-15', 'En cours', 'CF-2024-002'),
+(3, 1, '2024-05-01', '2024-05-10', 'En cours', 'CF-2024-003');
+
+-- Insertion de données pour la table LIGNE_COMMANDE_FOURNISSEUR
+INSERT INTO LIGNE_COMMANDE_FOURNISSEUR (id_ligne_commande_fournisseur, id_commande_fournisseur, id_produit, quantite_commandee, prix_unitaire_achat) VALUES
+(1, 1, 1, 30, 10.00),
+(2, 1, 3, 50, 5.00),
+(3, 2, 2, 20, 25.00),
+(4, 3, 1, 40, 10.00);
+
+-- Insertion de données pour la table COMMANDE_CLIENT
+INSERT INTO COMMANDE_CLIENT (id_commande_client, id_client, date_commande, statut, montant_total, reference) VALUES
+(1, 1, '2024-04-02', 'Livrée', 45.00, 'CC-2024-001'),
+(2, 2, '2024-04-06', 'En cours', 70.00, 'CC-2024-002'),
+(3, 1, '2024-05-03', 'En cours', 30.00, 'CC-2024-003');
+
+-- Insertion de données pour la table LIGNE_COMMANDE_CLIENT
+INSERT INTO LIGNE_COMMANDE_CLIENT (id_ligne_commande_client, id_commande_client, id_produit, quantite_commandee, prix_unitaire_vente) VALUES
+(1, 1, 1, 3, 15.00),
+(2, 2, 2, 2, 35.00),
+(3, 3, 1, 2, 15.00);
+
+-- Insertion de données pour la table MOUVEMENT_STOCK
+INSERT INTO MOUVEMENT_STOCK (id_mouvement, id_produit, id_entrepot, date_mouvement, type_mouvement, quantite, reference) VALUES
+(1, 1, 1, '2024-04-01 09:00:00', 'Entree', 50, 'CF-2024-001'),
+(2, 3, 1, '2024-04-01 09:30:00', 'Entree', 100, 'CF-2024-001'),
+(3, 1, 1, '2024-04-02 10:00:00', 'Sortie', 3, 'CC-2024-001'),
+(4, 2, 2, '2024-04-05 11:00:00', 'Entree', 20, 'CF-2024-002'),
+(5, 2, 2, '2024-04-06 12:00:00', 'Sortie', 2, 'CC-2024-002'),
+(6, 1, 1, '2024-05-03 14:00:00', 'Sortie', 2, 'CC-2024-003');
+```
+
+</details>
 
 **4. Fonctionnalités Avancées (À faire par vous - en PostgreSQL)**
 

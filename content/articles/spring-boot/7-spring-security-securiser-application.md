@@ -1,6 +1,11 @@
 ---
-title: Spring Security : Sécuriser Votre Application Spring Boot
-tags: spring-boot security authentification autorisation jwt
+title: Spring Security  , Sécuriser Votre Application Spring Boot
+tags:
+  - spring-boot
+  - security
+  - authentification
+  - autorisation
+  - jwt
 draft: false
 ---
 

@@ -112,12 +112,12 @@ Insérez les données suivantes dans les tables que vous avez créées.
 
 | id\_employe | nom     | prenom    | email                       | telephone    | poste                   |
 |-------------|---------|-----------|-----------------------------|--------------|-------------------------|
-| 1           | Dubois  | Marie     | [adresse e-mail supprimée]   | 06 11 22 33 44 | Chef de projet          |
-| 2           | Lefevre | Pierre    | [adresse e-mail supprimée]   | 07 55 66 77 88 | Développeur front-end   |
-| 3           | Garcia  | Sophie    | [adresse e-mail supprimée]  | 06 99 88 77 66 | Développeur back-end    |
-| 4           | Chen    | Li        | [adresse e-mail supprimée]     | 07 12 34 56 78 | Designer UI/UX          |
-| 5           | Rossi   | Antoine   | [adresse e-mail supprimée]  | 06 44 33 22 11 | Testeur QA              |
-| 6           | Moreau  | Isabelle  | [adresse e-mail supprimée] | 07 88 99 00 11 | Responsable marketing   |
+| 1           | Dubois  | Marie     | marie.dubois@example.com   | 06 11 22 33 44 | Chef de projet          |
+| 2           | Lefevre | Pierre    | pierre.lefevre@example.com   | 07 55 66 77 88 | Développeur front-end   |
+| 3           | Garcia  | Sophie    | sophie.garcia@example.com  | 06 99 88 77 66 | Développeur back-end    |
+| 4           | Chen    | Li        | li.chen@example.com     | 07 12 34 56 78 | Designer UI/UX          |
+| 5           | Rossi   | Antoine   | antoine.rossi@example.com  | 06 44 33 22 11 | Testeur QA              |
+| 6           | Moreau  | Isabelle  | isabelle.moreau@example.com | 07 88 99 00 11 | Responsable marketing   |
 
 **Table `PARTICIPATION`:**
 
@@ -172,9 +172,92 @@ Insérez les données suivantes dans les tables que vous avez créées.
 | 9               | 6           | 15        | 2025-08-16              | 2025-09-30            | 0.5          |
 | 10              | 4           | 14        | 2025-07-16              | 2025-08-15            | 0.8          |
 
-**Instructions pour l'insertion (À faire par vous) :**
+<details>
+<summary>Requêtes d'insertion de données</summary>
 
-Utilisez l'instruction `INSERT INTO` pour ajouter toutes ces données dans les tables correspondantes. Soyez patient(e), il y en a beaucoup !
+```sql
+-- Insertion de données pour la table PROJET
+INSERT INTO PROJET (id_projet, nom_projet, date_debut, date_fin_prevue, date_fin_reelle, statut) VALUES
+(1, 'Refonte du site web', '2024-05-01', '2024-08-31', '2024-09-15', 'Terminé'),
+(2, 'Développement application mobile', '2024-07-15', '2025-01-31', NULL, 'En cours'),
+(3, 'Lancement nouveau produit', '2025-01-01', '2025-06-30', NULL, 'Planifié'),
+(4, 'Campagne marketing Q3', '2025-07-01', '2025-09-30', NULL, 'Planifié');
+
+-- Insertion de données pour la table TACHE
+INSERT INTO TACHE (id_tache, nom_tache, description, date_debut_prevue, date_fin_prevue, date_fin_reelle, id_projet, priorite, statut) VALUES
+(1, 'Analyse des besoins', 'Recueillir et analyser les besoins des utilisateurs', '2024-05-01', '2024-05-15', '2024-05-12', 1, 1, 'Terminé'),
+(2, 'Conception de l''interface', 'Créer les maquettes et les wireframes', '2024-05-16', '2024-06-15', '2024-06-20', 1, 2, 'Terminé'),
+(3, 'Développement front-end', 'Implémenter l''interface utilisateur', '2024-06-16', '2024-07-31', '2024-08-10', 1, 2, 'Terminé'),
+(4, 'Développement back-end', 'Créer la logique serveur et la base de données', '2024-06-16', '2024-08-15', '2024-09-01', 1, 2, 'Terminé'),
+(5, 'Tests et validation', 'Tester l''application et corriger les bugs', '2024-08-01', '2024-08-31', '2024-09-15', 1, 1, 'Terminé'),
+(6, 'Conception des écrans', 'Créer les maquettes pour l''application mobile', '2024-07-15', '2024-08-30', NULL, 2, 1, 'En cours'),
+(7, 'Développement iOS', 'Développer la version iOS de l''application', '2024-09-01', '2024-12-15', NULL, 2, 2, 'À faire'),
+(8, 'Développement Android', 'Développer la version Android de l''application', '2024-09-01', '2024-12-15', NULL, 2, 2, 'À faire'),
+(9, 'Tests application mobile', 'Tester les versions iOS et Android', '2024-12-16', '2025-01-31', NULL, 2, 1, 'À faire'),
+(10, 'Étude de marché', 'Analyser le marché pour le nouveau produit', '2025-01-01', '2025-02-28', '2025-02-25', 3, 1, 'Terminé'),
+(11, 'Développement du produit', 'Créer et prototyper le nouveau produit', '2025-03-01', '2025-05-31', NULL, 3, 2, 'En cours'),
+(12, 'Préparation du lancement', 'Planifier la logistique et la communication', '2025-05-01', '2025-06-30', NULL, 3, 1, 'Planifié'),
+(13, 'Définition des objectifs', 'Fixer les buts de la campagne marketing', '2025-07-01', '2025-07-15', NULL, 4, 1, 'Planifié'),
+(14, 'Création des supports marketing', 'Concevoir les visuels et les textes', '2025-07-16', '2025-08-15', NULL, 4, 2, 'Planifié'),
+(15, 'Lancement de la campagne', 'Diffuser les supports sur les canaux choisis', '2025-08-16', '2025-09-30', NULL, 4, 1, 'Planifié');
+
+-- Insertion de données pour la table EMPLOYE
+INSERT INTO EMPLOYE (id_employe, nom, prenom, email, telephone, poste) VALUES
+(1, 'Dubois', 'Marie', 'marie.dubois@example.com', '06 11 22 33 44', 'Chef de projet'),
+(2, 'Lefevre', 'Pierre', 'pierre.lefevre@example.com', '07 55 66 77 88', 'Développeur front-end'),
+(3, 'Garcia', 'Sophie', 'sophie.garcia@example.com', '06 99 88 77 66', 'Développeur back-end'),
+(4, 'Chen', 'Li', 'li.chen@example.com', '07 12 34 56 78', 'Designer UI/UX'),
+(5, 'Rossi', 'Antoine', 'antoine.rossi@example.com', '06 44 33 22 11', 'Testeur QA'),
+(6, 'Moreau', 'Isabelle', 'isabelle.moreau@example.com', '07 88 99 00 11', 'Responsable marketing');
+
+-- Insertion de données pour la table PARTICIPATION
+INSERT INTO PARTICIPATION (id_participation, id_employe, id_projet, role, date_debut_participation, date_fin_participation) VALUES
+(1, 1, 1, 'Chef de projet', '2024-05-01', '2024-09-15'),
+(2, 2, 1, 'Développeur front', '2024-06-16', '2024-08-10'),
+(3, 3, 1, 'Développeur back', '2024-06-16', '2024-09-01'),
+(4, 4, 1, 'Designer UI/UX', '2024-05-16', '2024-06-20'),
+(5, 5, 1, 'Testeur QA', '2024-08-01', '2024-09-15'),
+(6, 1, 2, 'Chef de projet', '2024-07-15', NULL),
+(7, 4, 2, 'Designer UI/UX', '2024-07-15', '2024-08-30'),
+(8, 2, 2, 'Développeur iOS', '2024-09-01', '2024-12-15'),
+(9, 3, 2, 'Développeur Android', '2024-09-01', '2024-12-15'),
+(10, 5, 2, 'Testeur QA', '2024-12-16', '2025-01-31'),
+(11, 1, 3, 'Chef de projet', '2025-01-01', NULL),
+(12, 4, 3, 'Designer UI/UX', '2025-03-01', '2025-05-31'),
+(13, 2, 3, 'Développeur produit', '2025-03-01', '2025-05-31'),
+(14, 6, 4, 'Responsable', '2025-07-01', NULL),
+(15, 4, 4, 'Créateur contenu', '2025-07-16', '2025-08-15');
+
+-- Insertion de données pour la table DEPENDANCE
+INSERT INTO DEPENDANCE (id_dependance, id_tache_predecesseur, id_tache_successeur, type_dependance) VALUES
+(1, 1, 2, 'Fin à Début'),
+(2, 2, 3, 'Fin à Début'),
+(3, 2, 4, 'Fin à Début'),
+(4, 3, 5, 'Fin à Début'),
+(5, 4, 5, 'Fin à Début'),
+(6, 6, 7, 'Fin à Début'),
+(7, 6, 8, 'Fin à Début'),
+(8, 7, 9, 'Fin à Début'),
+(9, 8, 9, 'Fin à Début'),
+(10, 10, 11, 'Fin à Début'),
+(11, 11, 12, 'Fin à Début'),
+(12, 13, 14, 'Fin à Début'),
+(13, 14, 15, 'Fin à Début');
+
+-- Insertion de données pour la table AFFECTATION
+INSERT INTO AFFECTATION (id_affectation, id_employe, id_tache, date_debut_affectation, date_fin_affectation, taux_effort) VALUES
+(1, 2, 3, '2024-06-16', '2024-07-31', 0.8),
+(2, 3, 4, '2024-06-16', '2024-08-15', 1.0),
+(3, 5, 5, '2024-08-01', '2024-09-15', 0.5),
+(4, 4, 6, '2024-07-15', '2024-08-30', 0.75),
+(5, 2, 7, '2024-09-01', '2024-12-15', 0.9),
+(6, 3, 8, '2024-09-01', '2024-12-15', 0.9),
+(7, 5, 9, '2024-12-16', '2025-01-31', 0.6),
+(8, 2, 11, '2025-03-01', '2025-05-31', 1.0),
+(9, 6, 15, '2025-08-16', '2025-09-30', 0.5),
+(10, 4, 14, '2025-07-16', '2025-08-15', 0.8);
+```
+</details>
 
 **4. Requêtes SQL (Plus de 100 \!) (À faire par vous)**
 
