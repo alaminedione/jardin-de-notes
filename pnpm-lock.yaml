@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@clack/prompts':
-        specifier: ^0.10.1
-        version: 0.10.1
+        specifier: ^0.11.0
+        version: 0.11.0
       '@floating-ui/dom':
         specifier: ^1.7.0
         version: 1.7.0
@@ -48,8 +48,8 @@ importers:
         specifier: ^3.3.1
         version: 3.3.1(esbuild@0.25.4)(sass-embedded@1.88.0)
       flexsearch:
-        specifier: 0.8.167
-        version: 0.8.167
+        specifier: 0.8.204
+        version: 0.8.204
       github-slugger:
         specifier: ^2.0.0
         version: 2.0.0
@@ -273,11 +273,11 @@ packages:
     peerDependencies:
       '@citation-js/core': ^0.7.0
 
-  '@clack/core@0.4.2':
-    resolution: {integrity: sha512-NYQfcEy8MWIxrT5Fj8nIVchfRFA26yYKJcvBS7WlUIlw2OmQOY9DhGGXMovyI5J5PpxrCPGkgUi207EBrjpBvg==}
+  '@clack/core@0.5.0':
+    resolution: {integrity: sha512-p3y0FIOwaYRUPRcMO7+dlmLh8PSRcrjuTndsiA0WAFbWES0mLZlrjVoBRZ9DzkPFJZG6KGkJmoEAY0ZcVWTkow==}
 
-  '@clack/prompts@0.10.1':
-    resolution: {integrity: sha512-Q0T02vx8ZM9XSv9/Yde0jTmmBQufZhPJfYAg2XrrrxWWaZgq1rr8nU8Hv710BQ1dhoP8rtY7YUdpGej2Qza/cw==}
+  '@clack/prompts@0.11.0':
+    resolution: {integrity: sha512-pMN5FcrEw9hUkZA4f+zLlzivQSeQf5dRGJjSUbvVYDLvpKCdQx5OaknvKzgbtXOizhP+SJJJjqEbOe55uKKfAw==}
 
   '@emnapi/runtime@1.4.3':
     resolution: {integrity: sha512-pBPWdu6MLKROBX05wSNKcNb++m5Er+KQ9QkB+WVM+pW2Kx9hoSrVTnu3BdkI5eBLZoKu/J6mW/B6i6bJB2ytXQ==}
@@ -1438,8 +1438,8 @@ packages:
     resolution: {integrity: sha512-YsGpe3WHLK8ZYi4tWDg2Jy3ebRz2rXowDxnld4bkQB00cc/1Zw9AWnC0i9ztDJitivtQvaI9KaLyKrc+hBW0yg==}
     engines: {node: '>=8'}
 
-  flexsearch@0.8.167:
-    resolution: {integrity: sha512-iCBbY9npWhNlTCiHha2pwGqtbhpSEHx8+m5FJab+DLr/IKMneLNDgWbu2+IOvsAHo/Euo2Fu/5awrAEhN4q8Jw==}
+  flexsearch@0.8.204:
+    resolution: {integrity: sha512-Vh+WUZfUHsVP6w4o5uAkYle8Gz/oEuztSWvpSY3h71AE8ox+goTQ2X5YG4x6VlKKfubkMwhewk8kBTOVKMObHA==}
 
   foreground-child@3.3.1:
     resolution: {integrity: sha512-gIXjKqtFuWEgzFRJA9WCQeSJLZDjgJUOMCMzxtvFq/37KojM1BFGufqsCy0r4qSQmYLsZYMeyRqzIWOMup03sw==}
@@ -2590,14 +2590,14 @@ snapshots:
       '@citation-js/date': 0.5.1
       citeproc: 2.4.63
 
-  '@clack/core@0.4.2':
+  '@clack/core@0.5.0':
     dependencies:
       picocolors: 1.1.1
       sisteransi: 1.0.5
 
-  '@clack/prompts@0.10.1':
+  '@clack/prompts@0.11.0':
     dependencies:
-      '@clack/core': 0.4.2
+      '@clack/core': 0.5.0
       picocolors: 1.1.1
       sisteransi: 1.0.5
 
@@ -3620,7 +3620,7 @@ snapshots:
     dependencies:
       to-regex-range: 5.0.1
 
-  flexsearch@0.8.167: {}
+  flexsearch@0.8.204: {}
 
   foreground-child@3.3.1:
     dependencies:
