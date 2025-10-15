@@ -7,643 +7,561 @@ tags:
 description: Interpréteur de commandes Unix, largement utilisé pour l'automatisation de tâches et la gestion du système.
 ---
 
-## Sommaire
 
-1.  Introduction à Bash
-    *   Qu'est-ce que Bash ?
-    *   Historique et rôle dans les systèmes Unix/Linux
-    *   Exécution de commandes
-2.  Bases du Scripting Bash
-    *   Syntaxe de base
-    *   Variables (déclaration, affectation, accès)
-    *   Types de données (chaînes, nombres)
-    *   Opérateurs (arithmétiques, de comparaison, logiques)
-3.  Structures de Contrôle
-    *   Conditions (if, elif, else)
-    *   Boucles (for, while, until)
-    *   Case statements
-4.  Entrées/Sorties et Redirections
-    *   Entrée standard (stdin), sortie standard (stdout), sortie d'erreur standard (stderr)
-    *   Redirection (>, >>, <, 2>, &>)
-    *   Pipes (|)
-5.  Fonctions
-    *   Déclaration et appel de fonctions
-    *   Arguments de fonction
-    *   Valeurs de retour
-6.  Gestion des Fichiers et Répertoires
-    *   Commandes courantes (ls, cd, pwd, mkdir, rm, cp, mv)
-    *   Permissions de fichiers (chmod, chown)
-7.  Traitement de Texte
-    *   Commandes (grep, sed, awk)
-    *   Expressions régulières
-8.  Gestion des Processus
-    *   Exécution de commandes en arrière-plan (&)
-    *   Jobs (jobs, fg, bg)
-    *   Signaux (kill)
-9.  Variables d'Environnement
-    *   Variables globales et locales
-    *   Exportation de variables
-10. Débogage de Scripts Bash
-    *   Options de débogage (set -x, set -e)
-    *   Affichage des variables
-    *   Outils de débogage
-11. Bonnes Pratiques
-    *   Commentaires
-    *   Gestion des erreurs
-    *   Utilisation de guillemets
-    *   Sécurité et Portabilité
-12. Ressources et Communauté
-    *   Documentation (man pages)
-    *   Communautés en ligne
-13. Tableaux (Arrays)
-    *   Déclaration et accès
-    *   Opérations sur les tableaux
-14. Expressions Arithmétiques Avancées
-    *   Utilisation de `bc` et `awk`
-    *   Calculs en virgule flottante
-15. Gestion des Signaux et `trap`
-    *   Types de signaux
-    *   Utilisation de `trap`
-16. Gestion des Erreurs Avancée et `exit`
-    *   Codes de sortie
-    *   Gestion des erreurs avec `set -e` et `trap`
-17. Alias et Fonctions Shell
-    *   Création d'alias
-    *   Fonctions shell avancées
-18. Historique des Commandes et Autocomplétion
-    *   Gestion de l'historique
-    *   Autocomplétion personnalisée
-## 1. Introduction à Bash
+# Note de Référence Complète sur le Shell Bash
 
-### Qu'est-ce que Bash ?
+## Introduction
 
-Bash (Bourne Again Shell) est un interpréteur de commandes Unix, largement utilisé pour l'automatisation de tâches et la gestion du système. Il permet d'exécuter des commandes, de manipuler des fichiers et des répertoires, de gérer les processus et de configurer l'environnement.
+Le **Bash (Bourne-Again SHell)** est un interpréteur de commandes et un langage de script puissant, omniprésent dans les systèmes d'exploitation de type Unix (Linux, macOS). Il permet d'automatiser des tâches, de gérer le système et de créer des outils complexes en combinant des commandes existantes. Cette note a pour but de couvrir tous les aspects essentiels pour maîtriser Bash.
 
-### Historique et rôle dans les systèmes Unix/Linux
+---
 
-*   Créé par Brian Fox en 1989.
-*   Remplace le Bourne shell (sh) comme interpréteur de commandes par défaut dans de nombreux systèmes Unix/Linux.
-*   Fournit des fonctionnalités améliorées par rapport au Bourne shell, telles que l'historique des commandes, l'autocomplétion et le scripting.
+### 1. Bases de la Syntaxe et Structure d'un Script
 
-### Exécution de commandes
+Un script Bash est un fichier texte contenant une série de commandes.
 
-*   Taper une commande dans le terminal et appuyer sur Entrée.
-*   Exemples : `ls`, `cd`, `pwd`, `mkdir`, `rm`.
+#### 1.1. Le Shebang
+La première ligne d'un script Bash doit être le "shebang". Il indique au système d'exploitation quel interpréteur utiliser pour exécuter le fichier.
 
-## 2. Bases du Scripting Bash
+```bash
+#!/bin/bash
+```
 
-### Syntaxe de base
+#### 1.2. Commentaires
+Les commentaires commencent par un `#`. Tout ce qui suit sur la même ligne est ignoré.
 
-*   Un script Bash est un fichier texte contenant une série de commandes Bash.
-*   La première ligne d'un script Bash doit être `#!/bin/bash` (shebang) pour indiquer l'interpréteur à utiliser.
-*   Les commentaires commencent par `#`.
+```bash
+# Ceci est un commentaire. Il ne sera pas exécuté.
+echo "Bonjour, Monde !" # Affiche un message.
+```
+
+#### 1.3. Exécution d'un Script
+Pour exécuter un script, il doit avoir la permission d'exécution.
+
+1.  **Rendre le script exécutable :**
+    ```bash
+    chmod +x mon_script.sh
+    ```
+2.  **Exécuter le script :**
+    ```bash
+    ./mon_script.sh
+    ```
+
+#### 1.4. Structure de base d'un script
 
 ```bash
 #!/bin/bash
 
-# Ceci est un commentaire
-echo "Hello, World!"
+# =========================================================
+# Description : Script d'exemple qui salue un utilisateur.
+# Auteur      : Votre Nom
+# Date        : 2023-10-27
+# Usage       : ./mon_script.sh [nom]
+# =========================================================
+
+# Déclaration d'une variable
+NOM_UTILISATEUR=${1:-"Invité"} # Utilise le premier argument, ou "Invité" par défaut
+
+# Corps principal du script
+echo "Bonjour, ${NOM_UTILISATEUR} !"
+echo "Le script s'est exécuté avec succès."
+
+# Fin du script avec un code de sortie explicite (0 = succès)
+exit 0
 ```
 
-### Variables (déclaration, affectation, accès)
+---
 
-*   Déclaration : `nom_variable=valeur` (pas d'espace avant ou après le signe égal).
-*   Accès : `$nom_variable` ou `${nom_variable}`.
+### 2. Variables, Types et Manipulation de Chaînes
+
+#### 2.1. Déclaration et Affectation
+Il n'y a pas d'espaces autour du signe `=`. Par convention, les noms de variables globales/constantes sont en majuscules.
 
 ```bash
-nom="John"
-echo "Hello, $nom!"
-echo "Hello, ${nom}!"
+NOM="Alice"
+AGE=30
+FICHIER_LOG="/var/log/system.log"
 ```
 
-### Types de données (chaînes, nombres)
-
-*   Bash ne distingue pas les types de données. Toutes les variables sont traitées comme des chaînes de caractères.
-*   Les opérations arithmétiques sont effectuées avec des commandes spéciales (ex: `expr`, `$(())`).
+#### 2.2. Utilisation des Variables
+Utilisez le signe `$` pour accéder à la valeur d'une variable. Les accolades `${}` sont plus robustes et évitent les ambiguïtés.
 
 ```bash
-age=30
-echo "Age: $age"
-
-resultat=$((age + 10))
-echo "Age dans 10 ans: $resultat"
+echo "Utilisateur : $NOM"
+echo "L'utilisateur est ${NOM}." # Préférable
 ```
 
-### Opérateurs (arithmétiques, de comparaison, logiques)
+#### 2.3. Variables Spéciales (Internes)
+Bash fournit des variables spéciales très utiles :
 
-*   Arithmétiques : `+`, `-`, `*`, `/`, `%` (utilisés avec `expr` ou `$(( ))`).
-*   Comparaison : `-eq` (égal), `-ne` (différent), `-lt` (inférieur), `-gt` (supérieur), `-le` (inférieur ou égal), `-ge` (supérieur ou égal).
-*   Logiques : `&&`, `||`, `!`
+| Variable | Description                                                     |
+| :------- | :-------------------------------------------------------------- |
+| `$0`     | Le nom du script.                                               |
+| `$1`, `$2`, ... | Les arguments passés au script.                                 |
+| `$#`     | Le nombre d'arguments passés au script.                         |
+| `$@`     | Tous les arguments, sous forme de mots séparés.                 |
+| `$*`     | Tous les arguments, sous forme d'une seule chaîne.              |
+| `$?`     | Le code de retour de la dernière commande exécutée (0 = succès). |
+| `$$`     | Le PID (Process ID) du script en cours.                         |
+| `$!`     | Le PID du dernier processus lancé en arrière-plan.              |
 
+**Exemple :**
 ```bash
-x=10
-y=5
-
-if [ $x -gt $y ]; then
-    echo "$x est supérieur à $y"
-fi
-
-if [[ $x > 0 && $y < 10 ]]; then
-    echo "Condition remplie"
-fi
+#!/bin/bash
+echo "Nom du script : $0"
+echo "Nombre d'arguments : $#"
+echo "Premier argument : $1"
+echo "Tous les arguments : $@"
 ```
 
-## 3. Structures de Contrôle
-
-### Conditions (if, elif, else)
-
-*   Permettent d'exécuter des blocs de code en fonction de conditions.
+#### 2.4. Tableaux (Arrays)
+Bash supporte les tableaux indexés.
 
 ```bash
-if [ condition ]; then
-    # ...
-elif [ condition ]; then
-    # ...
-else
-    # ...
-fi
-```
+# Déclaration
+serveurs=("web-prod-01" "db-prod-01" "api-prod-01")
 
-### Boucles (for, while, until)
+# Accéder à un élément (l'indexation commence à 0)
+echo "Serveur web : ${serveurs[0]}"
 
-*   `for` : Boucle for (pour parcourir les séquences).
-*   `while` : Boucle while (tant que la condition est vraie).
-*   `until` : Boucle until (jusqu'à ce que la condition soit vraie).
-
-```bash
-for i in 1 2 3 4 5; do
-    echo $i
-done
-
-i=0
-while [ $i -lt 5 ]; do
-    echo $i
-    i=$((i + 1))
-done
-
-i=0
-until [ $i -ge 5 ]; do
-    echo $i
-    i=$((i + 1))
-done
-```
-
-### Case statements
-
-*   Permettent de simplifier les conditions multiples.
-
-```bash
-case "$variable" in
-    "valeur1")
-        # ...
-        ;;
-    "valeur2")
-        # ...
-        ;;
-    *)
-        # ...
-        ;;
-esac
-```
-## 4. Entrées/Sorties et Redirections
-
-### Entrée standard (stdin), sortie standard (stdout), sortie d'erreur standard (stderr)
-
-*   `stdin` : Entrée standard (par défaut, le clavier).
-*   `stdout` : Sortie standard (par défaut, l'écran).
-*   `stderr` : Sortie d'erreur standard (par défaut, l'écran).
-
-### Redirection (>, >>, <, 2>, &>)
-
-*   `>` : Redirige la sortie standard vers un fichier (écrase le contenu existant).
-*   `>>` : Redirige la sortie standard vers un fichier (ajoute à la fin du fichier).
-*   `<` : Redirige l'entrée standard depuis un fichier.
-*   `2>` : Redirige la sortie d'erreur standard vers un fichier.
-*   `&>` : Redirige la sortie standard et la sortie d'erreur standard vers un fichier.
-
-```bash
-ls > liste_fichiers.txt
-echo "Erreur" 2> erreurs.txt
-commande_bidon &> sortie.txt
-```
-
-### Pipes (|)
-
-*   Permettent de connecter la sortie d'une commande à l'entrée d'une autre commande.
-
-```bash
-ls -l | grep "mon_fichier"
-```
-## 5. Fonctions
-
-### Déclaration et appel de fonctions
-
-*   Déclaration : `nom_fonction() { // corps }`
-*   Appel : `nom_fonction`
-
-### Arguments de fonction
-
-*   Accès aux arguments : `$1`, `$2`, `$3`, ...
-*   Nombre d'arguments : `$#`
-*   Tous les arguments : `$@`
-
-### Valeurs de retour
-
-*   Utilisation de la commande `return` pour retourner une valeur (entre 0 et 255).
-*   La valeur de retour est accessible via la variable `$?`.
-
-```bash
-ma_fonction() {
-    echo "Argument 1: $1"
-    echo "Nombre d'arguments: $#"
-    return 0
-}
-
-ma_fonction "Hello" "World"
-echo "Valeur de retour: $?"
-```
-## 6. Gestion des Fichiers et Répertoires
-
-### Commandes courantes (ls, cd, pwd, mkdir, rm, cp, mv)
-
-*   `ls` : Liste les fichiers et répertoires.
-*   `cd` : Change de répertoire.
-*   `pwd` : Affiche le répertoire courant.
-*   `mkdir` : Crée un répertoire.
-*   `rm` : Supprime des fichiers et des répertoires.
-*   `cp` : Copie des fichiers et des répertoires.
-*   `mv` : Déplace ou renomme des fichiers et des répertoires.
-
-### Permissions de fichiers (chmod, chown)
-
-*   `chmod` : Modifie les permissions d'un fichier ou d'un répertoire.
-*   `chown` : Modifie le propriétaire d'un fichier ou d'un répertoire.
-
-```bash
-chmod +x mon_script.sh # Ajoute le droit d'exécution
-chown user:group mon_fichier.txt # Change le propriétaire et le groupe
-```
-## 7. Traitement de Texte
-
-### Commandes (grep, sed, awk)
-
-*   `grep` : Recherche des motifs dans des fichiers.
-*   `sed` : Éditeur de flux (permet de modifier du texte).
-*   `awk` : Langage de programmation pour le traitement de texte.
-
-### Expressions régulières
-
-*   Utilisées avec `grep`, `sed` et `awk` pour rechercher et manipuler du texte.
-
-```bash
-grep "motif" mon_fichier.txt # Recherche les lignes contenant "motif"
-sed 's/ancien/nouveau/g' mon_fichier.txt # Remplace "ancien" par "nouveau"
-awk '{print $1}' mon_fichier.txt # Affiche la première colonne
-```
-## 8. Gestion des Processus
-
-### Exécution de commandes en arrière-plan (&)
-
-*   Ajouter `&` à la fin d'une commande pour l'exécuter en arrière-plan.
-
-```bash
-commande_longue &
-```
-
-### Jobs (jobs, fg, bg)
-
-*   `jobs` : Liste les processus en arrière-plan.
-*   `fg` : Amène un processus en avant-plan.
-*   `bg` : Envoie un processus en arrière-plan.
-
-### Signaux (kill)
-
-*   `kill` : Envoie un signal à un processus (ex: `SIGTERM` pour terminer, `SIGKILL` pour forcer la terminaison).
-
-```bash
-kill -9 PID # Force la terminaison du processus avec l'ID PID
-```
-## 9. Variables d'Environnement
-
-### Variables globales et locales
-
-*   Variables globales : Accessibles depuis n'importe quel script ou commande.
-*   Variables locales : Accessibles uniquement dans la fonction ou le script où elles sont définies.
-
-### Exportation de variables
-
-*   Utilisation de la commande `export` pour rendre une variable locale accessible aux processus enfants.
-
-```bash
-export MA_VARIABLE="valeur"
-```
-## 10. Débogage de Scripts Bash
-
-### Options de débogage (set -x, set -e)
-
-*   `set -x` : Affiche chaque commande avant son exécution.
-*   `set -e` : Arrête l'exécution du script si une commande échoue.
-
-### Affichage des variables
-
-*   Utilisation de la commande `echo` pour afficher la valeur des variables.
-
-```bash
-set -x # Active le débogage
-
-nom="John"
-echo "Nom: $nom"
-
-set +x # Désactive le débogage
-```
-
-### Outils de débogage
-
-*   **`shellcheck`** : Un outil statique d'analyse de scripts shell qui détecte les erreurs courantes et les avertissements.
-*   **`bashdb`** : Un débogueur pour les scripts Bash, similaire à `gdb` pour C/C++. Il permet de définir des points d'arrêt, d'inspecter les variables et d'exécuter le script pas à pas.
-
-```bash
-# Exemple d'utilisation de shellcheck
-# Installez-le via votre gestionnaire de paquets (ex: sudo apt install shellcheck)
-shellcheck mon_script.sh
-
-# Exemple d'utilisation de bashdb
-# Installez-le via votre gestionnaire de paquets (ex: sudo apt install bashdb)
-# bashdb mon_script.sh
-```
-## 11. Bonnes Pratiques
-
-### Commentaires
-
-*   Écrire des commentaires pour expliquer le code.
-*   Utiliser des commentaires pour décrire le but du script, les fonctions et les variables.
-
-### Gestion des erreurs
-
-*   Vérifier le code de retour des commandes.
-*   Utiliser `set -e` pour arrêter l'exécution du script en cas d'erreur.
-*   Utiliser des blocs `try...catch` (avec des fonctions) pour gérer les exceptions.
-
-### Utilisation de guillemets
-
-*   Utiliser des guillemets doubles (`"`) pour permettre l'expansion des variables.
-*   Utiliser des guillemets simples (`'`) pour empêcher l'expansion des variables.
-
-### Sécurité et Portabilité
-
-*   **Éviter l'exécution de commandes non fiables** : Toujours valider les entrées utilisateur et éviter d'exécuter des commandes construites à partir de chaînes non nettoyées.
-*   **Utiliser des chemins absolus ou vérifier les chemins** : Pour les scripts critiques, utilisez des chemins absolus pour les exécutables ou vérifiez que les commandes sont bien celles attendues (ex: `command -v`).
-*   **Gérer les fichiers temporaires de manière sécurisée** : Utilisez `mktemp` pour créer des fichiers temporaires uniques et sécurisés.
-*   **Compatibilité Shell** : Si le script doit être portable, évitez les fonctionnalités spécifiques à Bash et privilégiez les constructions POSIX shell. Utilisez `#!/bin/sh` si la compatibilité est une priorité.
-
-```bash
-# Exemple de création de fichier temporaire sécurisé
-TEMP_FILE=$(mktemp)
-echo "Contenu temporaire" > "$TEMP_FILE"
-cat "$TEMP_FILE"
-rm "$TEMP_FILE"
-
-# Vérification de l'existence d'une commande
-if ! command -v docker &> /dev/null; then
-    echo "Docker n'est pas installé. Veuillez l'installer pour continuer."
-    exit 1
-fi
-```
-## 12. Ressources et Communauté
-
-### Documentation (man pages)
-
-*   Utiliser la commande `man` pour accéder à la documentation des commandes Bash.
-
-```bash
-man ls
-```
-
-### Communautés en ligne
-
-*   [Stack Overflow](https://stackoverflow.com/)
-*   [Reddit (r/bash)](https://www.reddit.com/r/bash/)
-
-## 13. Tableaux (Arrays)
-
-### Déclaration et accès
-
-*   Les tableaux en Bash permettent de stocker une collection de valeurs.
-*   Déclaration : `array_name=(valeur1 valeur2 ...)`
-*   Accès à un élément : `${array_name[index]}` (l'index commence à 0).
-*   Accès à tous les éléments : `${array_name[@]}` ou `${array_name[*]}`.
-*   Nombre d'éléments : `${#array_name[@]}`.
-
-```bash
-fruits=("pomme" "banane" "cerise")
-echo "Premier fruit: ${fruits[0]}"
-echo "Tous les fruits: ${fruits[@]}"
-echo "Nombre de fruits: ${#fruits[@]}"
+# Accéder à tous les éléments
+echo "Tous les serveurs : ${serveurs[@]}"
 
 # Ajouter un élément
-fruits+=("orange")
-echo "Après ajout: ${fruits[@]}"
+serveurs+=("backup-01")
 
-# Supprimer un élément
-unset fruits[1] # Supprime "banane"
-echo "Après suppression: ${fruits[@]}"
+# Nombre d'éléments
+echo "Nombre de serveurs : ${#serveurs[@]}"
 ```
 
-### Opérations sur les tableaux
-
-*   **Parcourir un tableau** :
+#### 2.5. Manipulation de Chaînes de Caractères
+Bash offre des outils puissants pour manipuler les chaînes sans appeler d'outils externes.
 
 ```bash
-for fruit in "${fruits[@]}"; do
-    echo "J'aime les $fruit"
+chaine="Le grand renard brun saute."
+
+# Longueur
+echo "Longueur : ${#chaine}" # -> 28
+
+# Extraction (substring)
+echo "Extraction : ${chaine:10:6}" # -> renard (à partir de l'index 10, sur 6 caractères)
+
+# Remplacement (la première occurrence)
+echo "Remplacement : ${chaine/brun/roux}" # -> Le grand renard roux saute.
+
+# Remplacement (toutes les occurrences)
+phrase="un un deux trois"
+echo "Remplacement global : ${phrase//un/zéro}" # -> zéro zéro deux trois
+
+# Supprimer un préfixe (non-greedy)
+fichier="photo.jpg"
+echo "Sans préfixe : ${fichier#*.}" # -> jpg
+
+# Supprimer un préfixe (greedy)
+chemin="/home/user/img/photo.jpg"
+echo "Sans préfixe : ${chemin##*/}" # -> photo.jpg
+
+# Supprimer un suffixe (non-greedy)
+echo "Sans suffixe : ${fichier%.*}" # -> photo
+```
+
+---
+
+### 3. Conditions, Boucles et Structures de Contrôle
+
+#### 3.1. Structure `if`, `elif`, `else`
+La syntaxe utilise `if`, `then`, `elif`, `else` et se termine par `fi`.
+
+```bash
+NB_FICHIERS=$(ls | wc -l)
+
+if [[ $NB_FICHIERS -gt 10 ]]; then
+  echo "Il y a beaucoup de fichiers."
+elif [[ $NB_FICHIERS -eq 0 ]]; then
+  echo "Le répertoire est vide."
+else
+  echo "Il y a quelques fichiers."
+fi
+```
+
+**Note :** Préférez `[[ ... ]]` à `[ ... ]` ou `test`. C'est une version améliorée qui évite de nombreux pièges (ex: gestion des espaces) et offre plus de fonctionnalités (expressions régulières, `&&`, `||`).
+
+#### 3.2. Opérateurs de test courants dans `[[ ... ]]`
+
+| Type       | Opérateur | Description                               |
+| :--------- | :-------- | :---------------------------------------- |
+| **Fichiers** | `-e file` | Vrai si le fichier existe.                |
+|            | `-f file` | Vrai si c'est un fichier régulier.        |
+|            | `-d dir`  | Vrai si c'est un répertoire.              |
+|            | `-s file` | Vrai si le fichier n'est pas vide.        |
+|            | `-r file` | Vrai si le fichier est lisible.           |
+|            | `-w file` | Vrai si le fichier est modifiable.        |
+|            | `-x file` | Vrai si le fichier est exécutable.        |
+| **Chaînes**  | `-z str`  | Vrai si la chaîne est vide.               |
+|            | `-n str`  | Vrai si la chaîne n'est pas vide.         |
+|            | `s1 == s2`| Vrai si les chaînes sont égales.          |
+|            | `s1 != s2`| Vrai si les chaînes sont différentes.     |
+| **Nombres**  | `n1 -eq n2` | Égal (`equal`)                            |
+|            | `n1 -ne n2` | Non égal (`not equal`)                    |
+|            | `n1 -gt n2` | Plus grand que (`greater than`)           |
+|            | `n1 -ge n2` | Plus grand ou égal (`greater or equal`)   |
+|            | `n1 -lt n2` | Plus petit que (`less than`)              |
+|            | `n1 -le n2` | Plus petit ou égal (`less or equal`)      |
+| **Logiques** | `&&`      | ET logique                                |
+|            | `||`      | OU logique                                |
+
+#### 3.3. Structure `case`
+Utile pour des tests multiples sur une seule variable.
+
+```bash
+read -p "Entrez une action (start/stop/restart) : " action
+
+case "$action" in
+  start)
+    echo "Démarrage du service..."
+    ;;
+  stop)
+    echo "Arrêt du service..."
+    ;;
+  restart)
+    echo "Redémarrage du service..."
+    ;;
+  *)
+    echo "Action non reconnue : $action"
+    exit 1
+    ;;
+esac
+```
+
+#### 3.4. Boucle `for`
+Itère sur une liste d'éléments.
+
+```bash
+# Itérer sur une liste
+for fruit in pomme banane orange; do
+  echo "J'aime les ${fruit}s."
+done
+
+# Style C
+for (( i=0; i<5; i++ )); do
+  echo "Compteur : $i"
+done
+
+# Itérer sur les fichiers d'un répertoire
+for fichier in /var/log/*.log; do
+  if [[ -f "$fichier" ]]; then
+    echo "Analyse du fichier : $fichier"
+  fi
 done
 ```
 
-*   **Tableaux associatifs (Bash 4+)** :
+#### 3.5. Boucle `while`
+S'exécute tant qu'une condition est vraie. Très courant pour lire un fichier ligne par ligne.
 
 ```bash
-declare -A personne
-personne["nom"]="Alice"
-personne["age"]=30
-
-echo "Nom: ${personne["nom"]}, Âge: ${personne["age"]}"
-
-for cle in "${!personne[@]}"; do
-    echo "$cle: ${personne[$cle]}"
+compteur=0
+while [[ $compteur -lt 5 ]]; do
+  echo "Le compteur est à $compteur"
+  ((compteur++))
 done
+
+# Lire un fichier ligne par ligne
+while IFS= read -r ligne; do
+  echo "Ligne lue : $ligne"
+done < "mon_fichier.txt"
 ```
 
-## 14. Expressions Arithmétiques Avancées
-
-### Utilisation de `bc` et `awk`
-
-*   Bash ne gère que les entiers par défaut. Pour les calculs en virgule flottante, utilisez des outils externes comme `bc` (basic calculator) ou `awk`.
+#### 3.6. Boucle `until`
+S'exécute jusqu'à ce qu'une condition devienne vraie (l'inverse de `while`).
 
 ```bash
-# Utilisation de bc pour les calculs en virgule flottante
-echo "scale=2; 10 / 3" | bc
-
-# Utilisation de awk pour les calculs en virgule flottante
-awk 'BEGIN { print 10 / 3 }'
+# Attendre qu'un service soit prêt
+until ping -c 1 mon-serveur.com &>/dev/null; do
+  echo "Le serveur est indisponible, nouvelle tentative dans 5s..."
+  sleep 5
+done
+echo "Le serveur est de nouveau en ligne !"
 ```
 
-### Calculs en virgule flottante
+---
+
+### 4. Fonctions et Paramètres
+
+#### 4.1. Déclaration et Appel
+Les fonctions permettent de regrouper du code réutilisable.
 
 ```bash
-num1=10.5
-num2=2.3
+# Déclaration
+saluer() {
+  local nom=$1 # Premier argument, variable locale
+  echo "Bonjour, $nom !"
+}
 
-# Addition
-result=$(echo "$num1 + $num2" | bc)
-echo "Addition: $result"
-
-# Multiplication
-result=$(echo "$num1 * $num2" | bc)
-echo "Multiplication: $result"
+# Appel
+saluer "Alice" # -> Bonjour, Alice !
+saluer "Bob"   # -> Bonjour, Bob !
 ```
 
-## 15. Gestion des Signaux et `trap`
+#### 4.2. Paramètres et Retour de Valeur
+Les fonctions accèdent à leurs arguments comme le script (`$1`, `$@`, etc.).
 
-### Types de signaux
-
-*   Les signaux sont des messages envoyés aux processus pour leur indiquer un événement.
-*   Exemples courants : `SIGINT` (Ctrl+C), `SIGTERM` (terminaison normale), `SIGKILL` (terminaison forcée), `SIGHUP` (déconnexion du terminal).
-*   Liste des signaux : `kill -l`
-
-### Utilisation de `trap`
-
-*   La commande `trap` permet de spécifier des commandes à exécuter lorsqu'un signal est reçu ou qu'un événement se produit (ex: sortie du script).
-*   Syntaxe : `trap 'commande' signal`
+*   **Code de retour (`return`)** : Une fonction retourne un code de statut (un entier entre 0 et 255). `0` signifie succès.
+*   **Retourner des données** : Pour retourner une chaîne de caractères ou d'autres données, la fonction doit l'écrire sur sa sortie standard (`echo` ou `printf`), et l'appelant la capture avec une substitution de commande `$(...)`.
 
 ```bash
-# Exécuter une commande avant de quitter le script
-trap 'echo "Le script est terminé."' EXIT
+# Fonction qui retourne une valeur via la sortie standard
+get_date() {
+  date "+%Y-%m-%d %H:%M:%S"
+}
 
-# Gérer Ctrl+C (SIGINT)
-trap 'echo "Ctrl+C a été pressé. Arrêt propre..." ; exit 1' INT
+# Fonction qui retourne un code de statut
+fichier_existe() {
+  if [[ -f "$1" ]]; then
+    return 0 # Succès
+  else
+    return 1 # Échec
+  fi
+}
 
-echo "Script en cours d'exécution. Appuyez sur Ctrl+C pour tester le trap."
-sleep 10
-echo "Fin normale du script."
+# Utilisation
+date_actuelle=$(get_date)
+echo "Date capturée : $date_actuelle"
+
+if fichier_existe "/etc/hosts"; then
+  echo "Le fichier /etc/hosts existe."
+else
+  echo "Le fichier /etc/hosts n'existe pas."
+fi
 ```
 
-## 16. Gestion des Erreurs Avancée et `exit`
+#### 4.3. Portée des variables (`local`)
+Par défaut, les variables sont globales. Utilisez `local` pour limiter leur portée à la fonction. C'est une bonne pratique essentielle.
 
-### Codes de sortie
+---
 
-*   Chaque commande Bash retourne un code de sortie (exit status).
-*   `0` indique le succès.
-*   Toute autre valeur (généralement 1-255) indique une erreur.
-*   Accès au code de sortie de la dernière commande : `$?`
+### 5. Gestion des Entrées/Sorties (E/S) et Redirections
+
+Les processus Unix ont trois flux de données standards :
+
+*   `stdin` (0) : Entrée standard (généralement le clavier).
+*   `stdout` (1) : Sortie standard (généralement l'écran).
+*   `stderr` (2) : Sortie d'erreur standard (généralement l'écran).
+
+| Syntaxe          | Description                                                    |
+| :--------------- | :------------------------------------------------------------- |
+| `cmd > fichier`    | Redirige `stdout` vers `fichier` (écrase le contenu).        |
+| `cmd >> fichier`   | Redirige `stdout` vers `fichier` (ajoute à la fin).          |
+| `cmd < fichier`    | Utilise `fichier` comme `stdin` pour `cmd`.                    |
+| `cmd 2> fichier`   | Redirige `stderr` vers `fichier`.                            |
+| `cmd &> fichier`   | Redirige `stdout` et `stderr` vers `fichier` (syntaxe Bash). |
+| `cmd > f 2>&1`   | Idem, syntaxe plus portable.                                 |
+| `cmd1 | cmd2`     | **Pipe** : Redirige `stdout` de `cmd1` vers `stdin` de `cmd2`. |
+| `cmd <<< "texte"`  | **Here String** : Passe "texte" comme `stdin`.                 |
+| `<<EOF`          | **Here Document** : Permet de passer un bloc de texte multi-lignes. |
+
+**Exemples :**
+```bash
+# Lister les fichiers et enregistrer dans un fichier
+ls -l > liste_fichiers.txt
+
+# Enregistrer les logs et les erreurs dans le même fichier
+./mon_script.sh &> script.log
+
+# Compter le nombre de processus "nginx"
+ps aux | grep nginx | wc -l
+
+# Utiliser un Here Document pour un script SQL
+sqlplus user/pass@db <<EOF
+  SELECT * FROM employees WHERE department = 'IT';
+  EXIT;
+EOF
+```
+
+---
+
+### 6. Expressions Régulières et Traitement de Texte
+
+#### 6.1. `grep` : Filtrer du texte
+Recherche des motifs dans un texte.
 
 ```bash
-ls fichier_non_existant
-echo "Code de sortie: $?"
+# Chercher une erreur dans un fichier de log (insensible à la casse)
+grep -i "error" /var/log/syslog
 
-# Quitter le script avec un code d'erreur
-exit 1
+# Afficher les lignes qui ne contiennent PAS "DEBUG"
+grep -v "DEBUG" app.log
+
+# Compter le nombre d'occurrences
+grep -c "connected" access.log
+
+# Utiliser les expressions régulières étendues (-E) pour trouver des adresses IP
+grep -E "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b" access.log
 ```
 
-### Gestion des erreurs avec `set -e` et `trap`
+#### 6.2. `sed` : Éditeur de flux
+Modifie le texte à la volée.
 
-*   `set -e` : Arrête le script immédiatement si une commande échoue (retourne un code de sortie non nul).
-*   Combiné avec `trap` pour un nettoyage ou un message d'erreur personnalisé.
+```bash
+# Remplacer la première occurrence de "old" par "new" sur chaque ligne
+sed 's/old/new/' fichier.txt
+
+# Remplacer toutes les occurrences (avec le flag 'g' pour global)
+sed 's/old/new/g' fichier.txt
+
+# Supprimer les lignes contenant "pattern"
+sed '/pattern/d' fichier.txt
+
+# Modifier le fichier sur place (avec précaution !)
+sed -i.bak 's/localhost/127.0.0.1/g' config.ini
+```
+
+#### 6.3. `awk` : Traitement de texte par colonnes
+Un langage de programmation puissant pour manipuler des données structurées.
+
+```bash
+# Afficher la première et la troisième colonne d'un fichier, séparées par des espaces
+ls -l | awk '{print $1, $9}'
+
+# Calculer l'espace disque total utilisé (colonne 5)
+df -h | awk 'NR>1 {sum+=$5} END {print sum "G"}'
+```
+
+#### 6.4. Expressions régulières dans Bash `[[ ... ]]`
+L'opérateur `=~` permet d'utiliser des expressions régulières directement dans une condition.
+
+```bash
+email="test@example.com"
+regex="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+
+if [[ $email =~ $regex ]]; then
+  echo "Adresse e-mail valide."
+else
+  echo "Adresse e-mail invalide."
+fi
+```
+
+---
+
+### 7. Commandes Essentielles et Utilitaires Courants
+
+| Commande      | Description                                                    |
+| :------------ | :------------------------------------------------------------- |
+| `ls`, `cd`, `pwd` | Navigation dans les répertoires.                             |
+| `cp`, `mv`, `rm`  | Copier, déplacer, supprimer des fichiers/répertoires.        |
+| `mkdir`, `rmdir`  | Créer, supprimer des répertoires.                            |
+| `touch`, `cat`    | Créer un fichier vide, afficher le contenu d'un fichier.     |
+| `head`, `tail`    | Afficher le début/la fin d'un fichier (`tail -f` pour suivre). |
+| `find`          | Rechercher des fichiers/répertoires (`find . -name "*.log"`).  |
+| `chmod`, `chown`  | Changer les permissions, changer le propriétaire.            |
+| `ps`, `kill`      | Lister les processus, envoyer un signal à un processus.      |
+| `df`, `du`        | Afficher l'espace disque (système, répertoire).              |
+| `curl`, `wget`    | Télécharger des fichiers depuis le réseau.                   |
+| `tar`, `gzip`     | Archiver et compresser des fichiers.                         |
+| `ssh`           | Se connecter à distance de manière sécurisée.                |
+| `date`          | Afficher/formater la date et l'heure.                        |
+
+---
+
+### 8. Gestion des Processus et des Tâches
+
+#### 8.1. Tâches en arrière-plan
+Ajoutez `&` à la fin d'une commande pour la lancer en arrière-plan.
+
+```bash
+sleep 60 &
+echo "La commande 'sleep' s'exécute en arrière-plan avec le PID $!"
+```
+
+#### 8.2. `jobs`, `fg`, `bg`
+- `jobs` : Liste les tâches en arrière-plan.
+- `fg %N` : Ramène la tâche N au premier plan.
+- `bg %N` : Fait continuer une tâche stoppée en arrière-plan.
+
+#### 8.3. `kill` et les Signaux
+`kill` envoie un signal à un processus.
+
+- `kill PID` : Envoie le signal `SIGTERM` (15), une demande polie d'arrêt.
+- `kill -9 PID` : Envoie le signal `SIGKILL` (9), une terminaison forcée.
+- `kill -1 PID` ou `kill -SIGHUP PID` : Envoie `SIGHUP`, souvent utilisé pour relire un fichier de configuration.
+
+#### 8.4. `trap` : Intercepter les signaux
+`trap` permet d'exécuter une commande lorsqu'un signal est reçu par le script. Très utile pour le nettoyage (suppression de fichiers temporaires).
 
 ```bash
 #!/bin/bash
 
-set -e # Arrête le script en cas d'erreur
+# Fichier temporaire
+FICHIER_TEMP=$(mktemp)
 
-# Fonction de gestion d'erreur
-handle_error() {
-    echo "Une erreur est survenue à la ligne $1."
-    exit 1
+# Fonction de nettoyage
+cleanup() {
+  echo "Nettoyage en cours..."
+  rm -f "$FICHIER_TEMP"
+  echo "Fichiers temporaires supprimés."
 }
 
-# Définir un trap pour appeler handle_error en cas d'erreur
-trap 'handle_error $LINENO' ERR
+# Intercepter les signaux de sortie, d'interruption (Ctrl+C) et de terminaison
+trap cleanup EXIT SIGINT SIGTERM
 
-echo "Début du script."
-
-# Cette commande va échouer et déclencher le trap
-cp fichier_source_inexistant fichier_destination
-
-echo "Cette ligne ne sera pas exécutée si l'erreur se produit."
+echo "Script en cours... Fichier temporaire créé : $FICHIER_TEMP"
+echo "Faites Ctrl+C pour tester le trap."
+sleep 60
 ```
 
-## 17. Alias et Fonctions Shell
+---
 
-### Création d'alias
+### 9. Gestion des Erreurs et Débogage
 
-*   Les alias sont des raccourcis pour des commandes plus longues.
-*   Syntaxe : `alias nom_alias='commande'`
-*   Utile pour les commandes fréquemment utilisées.
+#### 9.1. Code de Retour (`$?`)
+Vérifiez toujours le code de retour des commandes critiques.
 
 ```bash
-alias ll='ls -alF'
-alias grep_py='grep --color=auto "\.py$"'
-
-# Pour rendre les alias persistants, ajoutez-les à ~/.bashrc ou ~/.bash_profile
+cp source.txt dest.txt
+if [[ $? -ne 0 ]]; then
+  echo "Erreur lors de la copie du fichier !"
+  exit 1
+fi
 ```
 
-### Fonctions shell avancées
-
-*   Les fonctions sont plus puissantes que les alias car elles peuvent prendre des arguments, avoir leur propre portée de variables et exécuter des blocs de code complexes.
-*   Elles sont chargées une seule fois et restent en mémoire, ce qui les rend plus rapides que les scripts externes pour des tâches répétitives.
+#### 9.2. Options `set` pour des scripts robustes
+Placez cette ligne au début de vos scripts pour les rendre plus sûrs :
 
 ```bash
-# Fonction pour créer un répertoire et s'y déplacer
-mkcd() {
-    mkdir -p "$1" && cd "$1"
-}
-
-# Fonction avec gestion d'erreurs
-safe_rm() {
-    if [ -z "$1" ]; then
-        echo "Usage: safe_rm <fichier_ou_dossier>"
-        return 1
-    fi
-    read -p "Êtes-vous sûr de vouloir supprimer '$1' ? (oui/non) " reponse
-    if [[ "$reponse" == "oui" ]]; then
-        rm -rf "$1"
-        echo "'$1' supprimé."
-    else
-        echo "Opération annulée."
-    fi
-}
+set -euo pipefail
 ```
+- `set -e` : Le script s'arrête immédiatement si une commande échoue.
+- `set -u` : Le script s'arrête si une variable non définie est utilisée.
+- `set -o pipefail` : Le code de retour d'un pipeline est celui de la dernière commande du pipeline à avoir échoué (au lieu de celui de la toute dernière commande).
 
-## 18. Historique des Commandes et Autocomplétion
+#### 9.3. Débogage
+- **Trace d'exécution (`-x`)** : Affiche chaque commande avant de l'exécuter.
+  ```bash
+  bash -x mon_script.sh
+  ```
+  Ou activez-le à l'intérieur du script :
+  ```bash
+  set -x # Activer le mode débogage
+  # ... code à déboguer ...
+  set +x # Désactiver
+  ```
+- **Vérification de syntaxe (`-n`)** : Lit le script sans l'exécuter, utile pour trouver des erreurs de syntaxe.
+  ```bash
+  bash -n mon_script.sh
+  ```
 
-### Gestion de l'historique
+---
 
-*   Bash garde une trace des commandes exécutées dans un fichier d'historique (généralement `~/.bash_history`).
-*   Commandes utiles : `history` (afficher l'historique), `Ctrl+R` (recherche inversée).
-*   Variables d'environnement pour l'historique : `HISTSIZE`, `HISTFILESIZE`, `HISTCONTROL`.
+### 10. Bonnes Pratiques
 
-```bash
-# Afficher les 10 dernières commandes
-history 10
+1.  **Toujours utiliser le shebang** `#!/bin/bash`.
+2.  **Utiliser `set -euo pipefail`** au début de vos scripts.
+3.  **Mettre les variables entre guillemets doubles (`"$variable"`)** pour éviter les problèmes avec les espaces et les caractères spéciaux.
+4.  **Utiliser `$(...)` pour la substitution de commande** au lieu des backticks `` (`...`) car c'est plus lisible et peut être imbriqué.
+5.  **Préférer `[[ ... ]]` à `[ ... ]`** pour les tests conditionnels.
+6.  **Utiliser `local` pour les variables dans les fonctions** pour éviter de polluer l'espace de noms global.
+7.  **Ajouter des commentaires** pour expliquer les parties complexes de votre code.
+8.  **Écrire des fonctions** pour le code réutilisable.
+9.  **Vérifier les codes de retour** des commandes importantes.
+10. **Créer une fonction `usage()`** pour expliquer comment utiliser votre script.
 
-# Rechercher une commande dans l'historique (Ctrl+R puis taper le motif)
-```
-
-### Autocomplétion personnalisée
-
-*   Bash peut être configuré pour autocompléter des arguments de commandes ou des noms de fichiers.
-*   Utilisation de la commande `complete` pour définir des règles d'autocomplétion.
-*   Souvent utilisé pour les commandes personnalisées ou les scripts.
-
-```bash
-# Exemple d'autocomplétion pour une commande personnalisée 'mycommand'
-# Complète avec les fichiers .txt
-_mycommand_completion() {
-    local cur
-    COMPREPLY=()
-    cur="${COMP_WORDS[COMP_CWORD]}"
-    COMPREPLY=( $(compgen -f -X '!*.txt' -- "$cur") )
-}
-complete -F _mycommand_completion mycommand
-
-# Pour rendre l'autocomplétion persistante, ajoutez-la à ~/.bashrc
-```
+---
